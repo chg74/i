@@ -3,421 +3,589 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>1xBet</title>
+<title>TURBO</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#fff;color:#333;font-family:'Segoe UI',Tahoma,Arial,sans-serif;min-height:100vh;overflow-x:hidden;user-select:none}
-.screen{display:none;width:100%;min-height:100vh;flex-direction:column}
-.screen.active{display:flex}
-#loginScreen{background:linear-gradient(180deg,#eaf2fb 0%,#ffffff 40%)}
-.login-hero{position:relative;height:270px;overflow:hidden;background:linear-gradient(135deg,#0A3D62,#1e6fa8 60%,#4a90c4)}
-.login-hero::before{content:'';position:absolute;top:-80px;right:-50px;width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,#e74c3c,#c0392b);opacity:.85;filter:blur(2px)}
-.login-hero::after{content:'';position:absolute;bottom:-90px;left:-70px;width:260px;height:260px;border-radius:50%;background:linear-gradient(135deg,#f0c419,#e67e22);opacity:.75;filter:blur(2px)}
-.ball{position:absolute;top:60px;left:50%;transform:translateX(-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#e8eef3 45%,#a9b8c5);box-shadow:0 12px 40px rgba(0,0,0,.35),inset -10px -10px 22px rgba(0,0,0,.12);z-index:5;animation:float 4s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
-.ball::before,.ball::after{content:'';position:absolute;top:0;bottom:0;width:2.5px;background:rgba(90,110,130,.5);left:50%;transform:translateX(-50%) rotate(-22deg)}
-.ball::after{transform:translateX(-50%) rotate(22deg)}
-.hero-title{position:absolute;bottom:18px;width:100%;text-align:center;color:#fff;font-size:15px;font-weight:700;letter-spacing:1px;z-index:6;opacity:.9}
-.login-form{padding:32px 30px 20px;flex:1;display:flex;flex-direction:column}
-.login-title{font-size:30px;font-weight:800;color:#0A3D62;text-align:center;margin-bottom:8px}
-.login-sub{text-align:center;color:#8896a8;font-size:13px;margin-bottom:32px}
-.field{padding:14px 4px;margin-bottom:12px;border-bottom:1.5px solid #dfe6ee;position:relative;transition:border-color .2s}
-.field:focus-within{border-bottom-color:#4a90c4}
-.field input{width:100%;border:none;outline:none;font-size:16px;background:transparent;color:#333;text-align:right;font-family:inherit}
-.field input::placeholder{color:#a8b3c0}
-.eye-btn{position:absolute;left:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#7a879b}
-.login-btn{margin-top:24px;width:100%;padding:17px;border:none;border-radius:32px;background:linear-gradient(135deg,#4a90c4,#2D9CDB);color:#fff;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(74,144,196,.45);transition:.2s;letter-spacing:.5px}
-.login-btn:active{transform:scale(.98)}
-.register-link{text-align:center;margin-top:auto;padding:30px 0 40px;color:#2D9CDB;font-size:16px;font-weight:800;cursor:pointer}
-.register-link::before{content:'✨ '}
-#signupScreen{background:#f7fafd}
-.signup-form{padding:30px 24px 24px;flex:1;display:flex;flex-direction:column}
-.signup-head{display:flex;align-items:center;gap:12px;margin-bottom:26px}
-.signup-back{background:#fff;border:none;width:42px;height:42px;border-radius:50%;font-size:20px;color:#0A3D62;box-shadow:0 3px 10px rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.signup-title{font-size:22px;font-weight:800;color:#0A3D62}
-.signup-sub{font-size:12px;color:#8896a8;margin-top:2px}
-.signup-card{background:#fff;border-radius:20px;padding:22px 20px;box-shadow:0 6px 24px rgba(10,61,98,.08)}
-.row-field{display:flex;justify-content:space-between;align-items:center;padding:16px 4px;border-bottom:1.5px solid #eef3f8;cursor:pointer}
-.row-field:last-of-type{border-bottom:none}
-.row-field .lbl{font-size:13px;color:#0A3D62;font-weight:700}
-.row-field .val{font-size:15px;color:#2c3e50;font-weight:700;display:flex;align-items:center;gap:8px}
-.row-field .val::after{content:'';width:8px;height:8px;border-right:2px solid #7a879b;border-bottom:2px solid #7a879b;transform:rotate(45deg);margin-bottom:3px}
-.promo-wrap{margin-top:16px;padding:14px 16px;background:#f7fafd;border-radius:12px;border:1.5px dashed #cfdae8}
-.promo-wrap input{width:100%;border:none;background:transparent;outline:none;font-size:14px;text-align:right;color:#333;font-family:inherit}
-.promo-wrap input::placeholder{color:#a8b3c0}
-.signup-btn{margin-top:26px;width:100%;padding:17px;border:none;border-radius:32px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(46,204,113,.4);transition:.2s;letter-spacing:.5px}
-.signup-btn:active{transform:scale(.98)}
-.signup-btn:disabled{opacity:.7;cursor:wait}
-.signup-note{text-align:center;font-size:12px;color:#8896a8;margin-top:16px;line-height:1.6;padding:0 8px}
-#successScreen{background:#f7fafd;position:fixed;inset:0;z-index:180;display:none;flex-direction:column;overflow-y:auto}
-#successScreen.active{display:flex}
-.success-inner{padding:36px 22px 30px;display:flex;flex-direction:column;align-items:center;flex:1}
-.success-icon{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#d4f5e0,#a8e6c0);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(46,204,113,.35);margin-bottom:20px;animation:popIn .4s ease}
-.success-icon svg{width:52px;height:52px}
-@keyframes popIn{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
-.success-title{font-size:24px;font-weight:800;color:#0A3D62;margin-bottom:6px;text-align:center}
-.success-sub{font-size:13px;color:#8896a8;margin-bottom:28px;text-align:center;line-height:1.6}
-.creds-card{width:100%;background:#eef3f8;border-radius:18px;padding:20px 22px;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(10,61,98,.04)}
-.cred-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
-.cred-row:first-child{border-bottom:1.5px dashed #cfdae8}
-.cred-label{font-size:13px;color:#0A3D62;font-weight:700}
-.cred-value{font-size:19px;font-weight:900;color:#0A3D62;letter-spacing:1px;direction:ltr;font-family:'Courier New',monospace}
-.cred-warning{margin-top:12px;font-size:11px;color:#e67e22;text-align:center;font-weight:700;line-height:1.5;background:#fff8ec;padding:8px 10px;border-radius:10px}
-.action-row{display:flex;gap:10px;width:100%;margin-bottom:16px}
-.action-btn{flex:1;background:#eef3f8;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:800;color:#0A3D62;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:.15s}
-.action-btn:active{transform:scale(.96);background:#e0e8f0}
-.action-btn svg{width:18px;height:18px}
-.next-btn{width:100%;padding:17px;border:none;border-radius:32px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(46,204,113,.4);letter-spacing:1px;transition:.2s}
-.next-btn:active{transform:scale(.98)}
-#dashboardScreen{background:#f5f7fa}
-.dash-top{padding:14px 12px;display:flex;align-items:stretch;gap:10px;background:linear-gradient(135deg,#0A3D62,#1e6fa8);border-radius:0 0 22px 22px;box-shadow:0 6px 20px rgba(10,61,98,.2)}
-.balance-box{flex:1;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border-radius:14px;padding:12px 16px;display:flex;flex-direction:column;justify-content:center;color:#fff;min-height:74px;text-align:right;border:1px solid rgba(255,255,255,.15)}
-.balance-label{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:4px;font-weight:500;text-align:right;width:100%}
-.balance-value{font-size:22px;font-weight:800;direction:rtl;line-height:1.15;text-align:right;width:100%;letter-spacing:.5px}
-.balance-value span{font-size:13px;font-weight:500;margin-right:2px;opacity:.85}
-.side-btns{display:flex;flex-direction:column;gap:5px;justify-content:center}
-.side-btns button{background:#fff;color:#0A3D62;border:none;border-radius:18px;padding:8px 22px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.12);min-width:96px;transition:.15s}
-.side-btns button:active{transform:scale(.96)}
-.side-btns button.logout-btn{background:#fff5f5;color:#e74c3c;font-size:12px;padding:7px 22px}
-.user-info-bar{padding:10px 16px;display:flex;justify-content:center;align-items:center;background:#fff;border-bottom:1px solid #eef3f8;font-size:13px;color:#667}
-.user-info-bar .uid{font-weight:800;color:#0A3D62;font-family:monospace;letter-spacing:.5px;font-size:14px}
-.user-info-bar .lbl{color:#8896a8;font-weight:600}
-.crash-image-wrap{padding:12px;position:relative}
-.crash-image-wrap img{width:100%;display:block;border-radius:16px;box-shadow:0 6px 22px rgba(0,0,0,.15)}
-.crash-click-zone{position:absolute;top:14%;left:50%;transform:translateX(-50%);width:70%;height:22%;cursor:pointer;z-index:5;border-radius:16px;transition:.15s}
-.crash-click-zone:active{background:rgba(240,196,25,.25)}
-.apple-click-zone{position:absolute;top:48%;left:50%;transform:translateX(-50%);width:85%;height:40%;cursor:pointer;z-index:5;border-radius:16px;transition:.15s}
-.apple-click-zone:active{background:rgba(46,204,113,.25)}
-#crashScreen{background:#1a2332;color:#fff;position:fixed;inset:0;z-index:100;display:none;flex-direction:column;transition:background .4s ease}
-#crashScreen.active{display:flex}
-#crashScreen.won{background:#2e7d32}
-.crash-top{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;transition:background .4s ease}
-.back-btn{background:none;border:none;color:#fff;font-size:26px;cursor:pointer;padding:4px 8px}
-.crash-balance{background:#2a3547;color:#fff;padding:9px 20px;border-radius:20px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .4s ease}
-#crashScreen.won .crash-balance{background:rgba(0,0,0,.25)}
-.crash-balance .plus{color:#2ecc71;font-weight:800}
-#crashScreen.won .crash-balance .plus{color:#fff}
-.crash-arena{margin:0 12px;background:#1e2a3d;border-radius:14px;position:relative;height:300px;overflow:hidden;border:1px solid #2a3a55}
-.crash-arena .label-top{position:absolute;top:14px;right:14px;background:transparent;border:1.5px solid #f0c419;color:#f0c419;padding:7px 16px;border-radius:22px;font-size:13px;font-weight:600;z-index:15}
-.crash-arena .label-top.crashed{border-color:#e74c3c;color:#e74c3c}
-.crash-arena .big-text{position:absolute;bottom:20px;right:20px;font-size:42px;font-weight:900;color:#fff;direction:ltr;z-index:5}
-.crash-arena .big-text.crashed{color:#e74c3c;font-size:22px}
-.crash-arena .plane{position:absolute;width:70px;height:70px;display:none;filter:drop-shadow(0 0 12px rgba(240,196,25,.9));z-index:10}
-.crash-arena .plane img{width:100%;height:100%;object-fit:contain}
-.crash-arena .trail{position:absolute;height:4px;background:linear-gradient(90deg,rgba(240,196,25,0) 0%,#f0c419 100%);border-radius:2px;display:none;transform-origin:left center;box-shadow:0 0 10px rgba(240,196,25,.8);z-index:8}
-.crash-arena .start-count{position:absolute;top:50%;right:20px;transform:translateY(-50%);font-size:32px;font-weight:900;color:#fff;display:none;z-index:12}
-.crash-arena .start-count.show{display:block}
-.win-banner{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.4);color:#fff;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:20;display:none;box-shadow:0 3px 10px rgba(0,0,0,.3);white-space:nowrap;backdrop-filter:blur(4px)}
-.win-banner.show{display:block;animation:popIn .25s ease}
-.crash-controls{padding:14px;transition:background .4s ease}
-.crash-controls .row{display:flex;gap:10px;align-items:center}
-.bet-input{flex:1;background:#1e2a3d;border:none;border-radius:10px;padding:15px;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:none;transition:background .4s ease}
-#crashScreen.won .bet-input{background:rgba(0,0,0,.25)}
-.place-btn{flex:1.4;background:#ff8c00;color:#fff;border:none;border-radius:26px;padding:15px;font-size:14px;font-weight:800;cursor:pointer}
-.place-btn.accepted{background:#ff8c00;opacity:.7}
-.place-btn.cashout{background:#2ecc71;color:#fff;font-size:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
-.place-btn.cashout small{font-size:12px;font-weight:600}
-.players-table{padding:6px 14px 20px;overflow-y:auto;flex:1;transition:background .4s ease;max-height:45vh;scrollbar-width:thin;scrollbar-color:#3a4d6a transparent}
-.players-table::-webkit-scrollbar{width:4px}
-.players-table::-webkit-scrollbar-thumb{background:#3a4d6a;border-radius:4px}
-.players-head{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;font-size:11px;color:#7a879b;padding:8px 4px;font-weight:700;text-align:center;transition:color .4s;position:sticky;top:0;background:#1a2332;z-index:2}
-#crashScreen.won .players-head{color:rgba(255,255,255,.65);background:#2e7d32}
-.players-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;font-size:12px;padding:7px 4px;color:#c8d0e0;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);transition:border-color .4s}
-#crashScreen.won .players-row{border-bottom-color:rgba(255,255,255,.15)}
-.players-row .col-user{color:#fff;text-align:right;padding-right:6px;font-family:monospace;letter-spacing:.5px;font-size:12px;direction:ltr;display:flex;align-items:center;justify-content:flex-end;gap:0;line-height:1.2;white-space:nowrap;overflow:hidden}
-.players-row .col-odds.win{color:#2ecc71;font-weight:700}
-#crashScreen.won .players-row .col-odds.win{color:#fff;text-shadow:0 0 6px rgba(255,255,255,.6)}
-.players-row .col-odds.lose{color:#e74c3c;font-weight:700}
-.players-row .col-win{color:#f0c419;font-weight:700}
-#crashScreen.won .players-row .col-win{color:#fff}
-#appleScreen{position:fixed;inset:0;z-index:150;display:none;background:url('https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/ab488ed6-75a0-4fc5-899c-d1b16caadb06.jpeg') center/cover no-repeat}
-#appleScreen.active{display:flex}
-.apple-inner{width:100%;height:100%;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(0,20,10,.3) 0%,rgba(0,20,10,.1) 40%,rgba(0,20,10,.5) 100%)}
-.apple-top{padding:10px 12px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative}
-.apple-balance-box{position:absolute;left:50%;top:8px;transform:translateX(-50%);background:rgba(30,40,60,.9);color:#fff;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:400;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.12);direction:rtl}
-.apple-balance-box .cur{font-size:12px;color:#fff;font-weight:400}
-.apple-back-btn{background:rgba(20,30,50,.8);border:none;color:#fff;font-size:16px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-right:auto}
-.apple-main{flex:1;display:flex;justify-content:center;align-items:center;padding:6px 14px;min-height:0;overflow:hidden}
-.apple-grid-wrap{display:flex;flex-direction:row;gap:6px;height:100%;max-height:100%}
-.apple-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(10,1fr);gap:3px;aspect-ratio:5/10;height:100%;max-height:100%}
-.apple-cell{position:relative;display:flex;align-items:center;justify-content:center}
-.apple-cell img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
-.apple-cell.clickable{cursor:pointer}
-.apple-cell.clickable:active img{transform:scale(.88);transition:.1s}
-.apple-mults{display:grid;grid-template-rows:repeat(10,1fr);gap:3px;width:56px;flex-shrink:0}
-.apple-mult{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:#c8d0e0;font-size:10px;font-weight:700;border-radius:8px;direction:ltr;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(3px)}
-.apple-mult.current{background:#8bc34a;color:#fff;font-weight:900;box-shadow:0 0 12px rgba(139,195,74,.8);border-color:rgba(255,255,255,.3)}
-.apple-mult.done{background:rgba(255,255,255,.04);opacity:.4}
-.apple-bottom{padding:10px 14px 14px;flex-shrink:0}
-.apple-ctrl-row{display:flex;gap:8px;margin-bottom:10px}
-.apple-ctrl-row button{flex:1;background:rgba(100,140,220,.7);color:#fff;border:none;padding:11px;border-radius:22px;font-weight:800;font-size:13px;cursor:pointer;letter-spacing:.5px;backdrop-filter:blur(4px)}
-.apple-ctrl-row button:disabled{opacity:.35;cursor:default}
-.apple-stake-row{display:flex;align-items:center;gap:10px;flex-direction:row-reverse}
-.apple-action-btn{background:#5a78e5;color:#fff;border:none;border-radius:26px;padding:14px 28px;font-weight:900;font-size:14px;cursor:pointer;letter-spacing:.5px;min-width:110px;transition:.2s;line-height:1.1}
-.apple-action-btn.cashout{background:#2ecc71;display:flex;flex-direction:column;align-items:center;font-size:16px}
-.apple-action-btn.cashout small{font-size:11px;font-weight:700;opacity:.95}
-.apple-stake-display{flex:1;background:rgba(20,30,50,.7);border:1.5px solid rgba(255,255,255,.15);border-radius:14px;padding:12px 18px;color:#fff;font-size:17px;font-weight:700;display:flex;justify-content:flex-end;gap:6px;align-items:center;direction:ltr}
-.modal{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;overflow-y:auto}
-.modal.show{display:flex}
-.modal-head{padding:18px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;background:#fff}
-.modal-head h2{font-size:20px;color:#0A3D62;font-weight:800}
-.modal-head .back{background:none;border:none;font-size:15px;color:#0A3D62;cursor:pointer;font-weight:700}
-.modal-body{padding:20px;flex:1}
-.methods-list{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px}
-.method-item{padding:20px;font-size:16px;color:#2c3e50;cursor:pointer;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:600}
-.method-item:last-child{border-bottom:none}
-.method-item.active{background:#eaf4fb;color:#0A3D62;font-weight:800}
-.deposit-info{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(0,0,0,.08);padding:20px;margin-bottom:16px;display:none}
-.deposit-info.show{display:block}
-.deposit-info h3{color:#0A3D62;font-size:16px;margin-bottom:10px}
-.deposit-info p{color:#666;font-size:13px;margin-bottom:14px}
-.number-row{background:#eef3f8;border-radius:8px;padding:14px;display:flex;align-items:center;justify-content:space-between;direction:ltr;margin-bottom:16px}
-.number-row .num{font-size:22px;font-weight:800;color:#0A3D62;letter-spacing:1px}
-.number-row button{background:#0A3D62;color:#fff;border:none;padding:9px 22px;border-radius:22px;font-size:14px;font-weight:700;cursor:pointer}
-.min-note{text-align:right;color:#e74c3c;font-size:14px;font-weight:700;margin-bottom:10px}
-.amount-input{width:100%;padding:15px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;outline:none;text-align:right;background:#fff;margin-bottom:10px;font-family:inherit}
-.file-box{background:#f9f9f9;border:1.5px dashed #ccc;border-radius:10px;padding:14px;margin-bottom:10px;text-align:center;cursor:pointer}
-.file-box label{display:block;cursor:pointer;color:#0A3D62;font-weight:700;font-size:14px}
-.file-box input[type=file]{display:none}
-.file-box .filename{font-size:12px;color:#666;margin-top:6px}
-.preview-img{display:none;width:100%;max-height:200px;object-fit:contain;border-radius:8px;margin-top:10px;border:1px solid #ddd}
-.confirm-btn{width:100%;padding:16px;border:none;border-radius:28px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
-.confirm-btn.green{background:linear-gradient(135deg,#2ecc71,#27ae60)}
-.confirm-btn.purple{background:linear-gradient(135deg,#7b5fd6,#5A3FA0)}
-.balance-green{background:linear-gradient(135deg,#4caf50,#388e3c);border-radius:14px;padding:25px;color:#fff;text-align:center;margin-bottom:20px}
-.balance-green .lbl{font-size:14px;margin-bottom:6px;opacity:.9}
-.balance-green .val{font-size:36px;font-weight:800}
-.balance-green .val span{font-size:18px;font-weight:600;margin-right:4px}
-.wd-field{margin-bottom:16px}
-.wd-field label{display:block;font-size:14px;color:#2c3e50;font-weight:700;margin-bottom:8px}
-.wd-field input{width:100%;padding:15px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;outline:none;text-align:right;font-family:inherit}
-.wd-note{text-align:center;font-size:12px;color:#888;margin-top:14px}
-.alert-box{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:30px}
-.alert-box.show{display:flex}
-.alert-card{background:#fff;border-radius:16px;padding:28px 22px;max-width:340px;width:100%;text-align:center;animation:popIn .25s ease}
-.alert-card h3{color:#0A3D62;font-size:18px;margin-bottom:12px;font-weight:800}
-.alert-card p{color:#555;font-size:14px;margin-bottom:20px;line-height:1.6;white-space:pre-line}
-.alert-card button{background:linear-gradient(135deg,#4a90c4,#2D9CDB);color:#fff;border:none;padding:13px 40px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer}
-.toast{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#0A3D62;color:#fff;padding:13px 24px;border-radius:10px;z-index:9000;font-size:13px;max-width:90%;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+html,body{min-height:100%}
+body{
+  background:#000;color:#fff;
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  min-height:100vh;overflow-x:hidden;user-select:none;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:0;position:relative;
+}
+#bgLayer{
+  position:fixed;inset:0;z-index:0;
+  background:url('https://thanosx.icu/kotev2/IMG/MAFYA.GIF') center/cover no-repeat;
+  opacity:.55;pointer-events:none;
+}
+#bgLayer::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.78));
+}
+
+.screen{display:none;width:100%;max-width:480px;flex-direction:column;padding:14px;padding-bottom:30px;position:relative;z-index:5;min-height:100vh}
+.screen.active{display:flex;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:10px}
+.status-pill{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.75);border:1.5px solid rgba(255,193,7,.4);border-radius:30px;padding:8px 14px;font-size:12px;font-weight:600;backdrop-filter:blur(6px)}
+.status-pill .dot-live{width:10px;height:10px;border-radius:50%;background:#ffc107;box-shadow:0 0 10px #ffc107;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.status-pill .label{color:#fff}
+.status-pill .value{color:#ffc107;font-weight:800;font-family:Consolas,monospace}
+
+.card{position:relative;background:rgba(4,4,4,.85);border:1.5px solid rgba(255,193,7,.25);border-radius:22px;padding:20px;backdrop-filter:blur(12px);box-shadow:0 10px 45px rgba(0,0,0,.8);margin-bottom:14px;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:url('https://thanosx.icu/kotev2/IMG/MAFYA.GIF') center/cover no-repeat;opacity:.10;pointer-events:none}
+.card > *{position:relative;z-index:1}
+.card-title{text-align:center;color:#fff;font-size:18px;font-weight:700;margin-bottom:8px}
+.card-subtitle{text-align:center;color:#bbb;font-size:12px;line-height:1.7;margin-bottom:18px}
+.card-subtitle .gold{color:#ffc107;font-weight:700}
+
+.logo-circle{width:170px;height:170px;border-radius:50%;margin:0 auto 20px;background:radial-gradient(circle,rgba(255,193,7,.15) 0%,transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 60px rgba(255,193,7,.35);overflow:hidden}
+.logo-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.logo-circle.small{width:100px;height:100px;margin-bottom:12px;box-shadow:0 0 30px rgba(255,193,7,.4)}
+
+.progress-outer{width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;margin:16px 0 8px}
+.progress-inner{height:100%;background:linear-gradient(90deg,#ffc107,#ff9800);border-radius:8px;transition:width .35s ease;box-shadow:0 0 15px rgba(255,193,7,.8)}
+.progress-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:12px}
+.progress-pct{color:#ffc107;font-weight:800;font-family:Consolas,monospace}
+.progress-txt{color:#fff;font-weight:600;font-size:12px}
+
+.tg-btn{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.75);border:1.5px solid rgba(255,193,7,.35);border-radius:16px;padding:12px 16px;text-decoration:none;color:#fff;font-size:13px;font-weight:700;margin-top:12px;transition:.15s}
+.tg-btn:active{transform:scale(.98);background:rgba(255,193,7,.12)}
+.tg-btn .tg-left{display:flex;align-items:center;gap:10px}
+.tg-btn .tg-icon{font-size:18px}
+.tg-btn .open-pill{background:#ffc107;color:#000;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:800;letter-spacing:1px}
+
+.tool-option{display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.65);border:1.5px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;margin-bottom:12px;cursor:pointer;transition:.15s}
+.tool-option:active{transform:scale(.98)}
+.tool-option.selected{border-color:#ffc107;background:rgba(255,193,7,.08);box-shadow:0 0 20px rgba(255,193,7,.2)}
+.tool-option .radio{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,193,7,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tool-option.selected .radio{border-color:#ffc107}
+.tool-option.selected .radio::after{content:'';width:12px;height:12px;border-radius:50%;background:#ffc107;box-shadow:0 0 10px #ffc107}
+.tool-option .info{flex:1;text-align:right;padding-right:6px}
+.tool-option .info .name{color:#fff;font-size:15px;font-weight:700;margin-bottom:3px}
+.tool-option .info .sub{color:#999;font-size:11px}
+.tool-option .thumb{width:62px;height:62px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#111;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.06)}
+.tool-option .thumb img{width:100%;height:100%;object-fit:cover}
+
+.action-btn{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,#ffc107,#ff9800);color:#000;font-size:15px;font-weight:800;letter-spacing:.5px;cursor:pointer;margin-top:8px;font-family:inherit;box-shadow:0 6px 25px rgba(255,193,7,.35);transition:.15s}
+.action-btn:active{transform:scale(.98)}
+.action-btn:disabled{opacity:.5;cursor:not-allowed}
+
+.input-box{display:flex;align-items:center;background:rgba(0,0,0,.65);border:1.5px solid rgba(255,193,7,.35);border-radius:16px;padding:5px;margin-bottom:12px;transition:.2s}
+.input-box:focus-within{border-color:#ffc107;box-shadow:0 0 0 3px rgba(255,193,7,.1)}
+.input-box input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:14px;font-weight:600;padding:14px 12px;text-align:right;font-family:inherit}
+.input-box input::placeholder{color:#666;font-weight:400}
+.input-box .suffix{background:rgba(255,193,7,.15);color:#ffc107;font-weight:800;font-size:12px;padding:12px 18px;border-radius:12px;letter-spacing:1px}
+
+.back-btn{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.7);border:1.5px solid rgba(255,193,7,.3);border-radius:16px;padding:12px 16px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;width:100%;font-family:inherit;transition:.15s;text-align:right}
+.back-btn:active{transform:scale(.98)}
+.back-btn .arrow-circle{width:30px;height:30px;border-radius:50%;background:rgba(255,193,7,.18);color:#ffc107;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.back-btn .txt{flex:1}
+
+#predictorScreen{padding:14px 16px}
+.predictor-wrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;flex:1;padding-top:10px}
+
+.circle-outer-new{position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.circle-outer-new::before{content:'';position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(255,120,0,.18) 0%,rgba(255,60,0,.06) 50%,transparent 75%);animation:haloPulseNew 3s ease-in-out infinite;z-index:0}
+@keyframes haloPulseNew{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.06);opacity:1}}
+.circle-svg-new{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);z-index:2}
+.circle-track-new{fill:none;stroke:rgba(255,193,7,.10);stroke-width:6}
+.circle-loading-new{
+  fill:none;
+  stroke:url(#ringGradNew);
+  stroke-width:6;
+  stroke-linecap:round;
+  stroke-dasharray:100 600;
+  stroke-dashoffset:0;
+  animation:circleLoadSpin 2.2s linear infinite;
+  filter:drop-shadow(0 0 12px rgba(255,120,0,.9));
+}
+@keyframes circleLoadSpin{
+  from{stroke-dashoffset:0}
+  to{stroke-dashoffset:-700}
+}
+.circle-svg-new2{position:absolute;inset:0;width:100%;height:100%;transform:rotate(90deg);z-index:2;pointer-events:none}
+.circle-loading-new2{
+  fill:none;
+  stroke:url(#ringGradNew2);
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:80 500;
+  stroke-dashoffset:0;
+  animation:circleLoadSpin2 3.5s linear infinite;
+  filter:drop-shadow(0 0 8px rgba(255,60,0,.8));
+}
+@keyframes circleLoadSpin2{
+  from{stroke-dashoffset:0}
+  to{stroke-dashoffset:580}
+}
+.circle-content-new{
+  position:relative;z-index:3;
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;
+}
+.predictor-num-new{
+  font-size:70px;font-weight:900;
+  font-family:Consolas,'Courier New',monospace;
+  color:#ffc107;
+  letter-spacing:-2px;
+  line-height:1;
+  text-shadow:0 0 25px rgba(255,193,7,.9),0 0 60px rgba(255,120,0,.6);
+  transition:.3s;
+  display:inline-block;
+}
+.predictor-num-new.waiting{
+  font-size:22px;color:#777;letter-spacing:3px;text-shadow:none;font-weight:700;
+}
+.predictor-num-new.updated{animation:pulseBigNew .6s ease}
+@keyframes pulseBigNew{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.15);text-shadow:0 0 60px #ffc107,0 0 120px rgba(255,120,0,.8)}
+  100%{transform:scale(1)}
+}
+.predictor-num-new .x-symbol{font-size:38px;color:#ff9800;margin-left:2px;font-weight:900}
+
+.id-row-new{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:6px;margin-bottom:14px;
+  font-size:16px;font-weight:700;color:#fff;
+}
+.id-row-new .id-label{color:#fff}
+.id-row-new .id-value{color:#ffc107;font-family:Consolas,monospace;letter-spacing:1px}
+
+.platform-row-new{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(0,0,0,.7);
+  border:1.5px solid rgba(255,193,7,.25);
+  border-radius:14px;
+  padding:10px 14px;
+  width:100%;
+  margin-bottom:16px;
+  backdrop-filter:blur(8px);
+}
+.platform-left-new{display:flex;align-items:center;gap:10px}
+.platform-name-new{font-size:15px;font-weight:900;color:#fff;letter-spacing:1px;font-style:italic}
+.platform-logo-new{width:34px;height:34px;border-radius:8px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,193,7,.3)}
+.platform-logo-new img{width:100%;height:100%;object-fit:cover}
+.platform-active-new{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#22c55e;letter-spacing:1px}
+.active-dot-new{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;animation:pulseGreen 1.4s infinite}
+@keyframes pulseGreen{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+
+.timer-block-new{text-align:center;margin-bottom:16px}
+.timer-label-new{font-size:13px;color:#fff;font-weight:600;margin-bottom:6px}
+.timer-value-new{
+  font-size:26px;font-weight:900;color:#ffc107;
+  font-family:Consolas,monospace;letter-spacing:2px;
+  text-shadow:0 0 18px rgba(255,193,7,.7);
+  direction:ltr;
+}
+.timer-value-new.warning{color:#ff6b6b;text-shadow:0 0 18px rgba(255,107,107,.7);animation:blinkW 1s ease-in-out infinite}
+@keyframes blinkW{0%,100%{opacity:1}50%{opacity:.55}}
+
+.tg-link-new{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:13px;font-weight:800;color:#ffc107;
+  text-decoration:none;
+  margin-bottom:14px;
+  letter-spacing:.5px;
+}
+.tg-link-new .tg-arrow{font-size:14px;color:#ffc107}
+.view-channel-new{
+  display:block;text-align:right;
+  font-size:12px;font-weight:800;color:#ffc107;
+  text-decoration:none;letter-spacing:2px;
+  padding:6px 4px;
+  margin-bottom:14px;
+}
+
+.status-text-new{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:11px;color:#888;letter-spacing:2px;font-weight:700;
+  margin-top:auto;padding-top:14px;
+}
+.status-text-new .dot-new{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;animation:pulse 1.4s infinite}
+.status-text-new.offline .dot-new{background:#ff6b6b;box-shadow:0 0 10px #ff6b6b}
+
+#splashScreen{position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;padding:30px}
+#splashScreen.active{display:flex}
+#splashScreen .inner{width:100%;max-width:340px;text-align:center}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#ffc107;color:#000;padding:12px 22px;border-radius:12px;font-size:12px;font-weight:800;z-index:99999;transition:.3s;opacity:0;box-shadow:0 10px 30px rgba(255,193,7,.5);pointer-events:none;white-space:nowrap;max-width:90%}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+.msg{display:none;padding:10px 14px;border-radius:10px;margin-top:12px;font-size:12px;font-weight:600;text-align:center;line-height:1.7}
+.msg.show{display:block}
+.msg.error{background:rgba(255,60,60,.15);color:#ff6b6b;border:1px solid rgba(255,60,60,.3)}
+.msg.success{background:rgba(255,193,7,.15);color:#ffc107;border:1px solid rgba(255,193,7,.35)}
+
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,193,7,.2);border-top-color:#ffc107;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ PROTECTION SHIELD ============ */
+#shieldScreen{
+  position:fixed;inset:0;background:#0A0A0A;color:#fff;
+  z-index:2147483647;display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:30px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+}
+#shieldScreen.show{display:flex}
+#shieldScreen .icon{font-size:70px;margin-bottom:18px}
+#shieldScreen h1{margin:18px 0;font-size:22px;color:#ffc107}
+#shieldScreen p{opacity:.85;line-height:1.9;font-size:14px;max-width:340px}
 </style>
 </head>
 <body>
 
-<div id="loginScreen" class="screen active">
-    <div class="login-hero"><div class="ball"></div><div class="hero-title">1XBET</div></div>
-    <div class="login-form">
-        <div class="login-title">تسجيل الدخول</div>
-        <div class="login-sub">أدخل الـ ID وكلمة المرور الخاصة بك</div>
-        <div class="field"><input id="loginUser" type="text" placeholder="أدخل الـ ID" inputmode="numeric" autocomplete="off"></div>
-        <div class="field"><input id="loginPass" type="password" placeholder="كلمة المرور" autocomplete="off"><button class="eye-btn" onclick="toggleEye('loginPass',this)">👁</button></div>
-        <button class="login-btn" onclick="doLogin()">دخول</button>
-        <div class="register-link" onclick="showScreen('signupScreen')">إنشاء حساب جديد</div>
-    </div>
+<div id="bgLayer"></div>
+
+<!-- PROTECTION SHIELD -->
+<div id="shieldScreen">
+  <div class="icon">🛡️</div>
+  <h1>تم إيقاف الصفحة مؤقتاً</h1>
+  <p>لأسباب أمنية، لا يمكن استخدام أدوات المطوّر هنا.<br>من فضلك اقفل الـ DevTools وأعد تحميل الصفحة.</p>
 </div>
 
-<div id="signupScreen" class="screen">
-    <div class="signup-form">
-        <div class="signup-head">
-            <button class="signup-back" onclick="showScreen('loginScreen')">→</button>
-            <div><div class="signup-title">إنشاء حساب جديد</div><div class="signup-sub">سيتم توليد ID وكلمة مرور تلقائياً</div></div>
-        </div>
-        <div class="signup-card">
-            <div class="row-field"><div class="lbl">البلد</div><div class="val">مصر</div></div>
-            <div class="row-field"><div class="lbl">العملة</div><div class="val">جنيه مصري (EGP)</div></div>
-            <div class="row-field"><div class="lbl">المكافأة</div><div class="val">مكافأة الرياضة</div></div>
-            <div class="promo-wrap"><input id="regPromo" type="text" placeholder="البرومو كود (إذا كان موجودًا عندك)" autocomplete="off"></div>
-        </div>
-        <button class="signup-btn" id="signupBtn" onclick="doSignup()">إنشاء الحساب</button>
-        <div class="signup-note">بالضغط على إنشاء الحساب يتم توليد ID وكلمة مرور تلقائياً، احتفظ بهما جيداً لتسجيل الدخول.</div>
+<!-- SPLASH -->
+<div id="splashScreen">
+  <div class="inner">
+    <div class="logo-circle">
+      <img src="https://raw.githubusercontent.com/turbo1-2/Sora1/refs/heads/main/1789152183482.png" alt="TURBO">
     </div>
+    <div class="progress-outer">
+      <div class="progress-inner" id="splashProgress" style="width:0%"></div>
+    </div>
+    <div class="progress-row">
+      <span class="progress-pct" id="splashPct">0%</span>
+      <span class="progress-txt">🚀 استعد لرفع نسبة نجاحك</span>
+    </div>
+  </div>
 </div>
 
-<div id="successScreen">
-    <div class="success-inner">
-        <div class="success-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5L10 18.5L20 7" stroke="#2ecc71" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="success-title">تم التسجيل بنجاح</div>
-        <div class="success-sub">احتفظ بهذه البيانات جيداً لتسجيل الدخول لاحقاً</div>
-        <div class="creds-card">
-            <div class="cred-row"><div class="cred-label">اسم المستخدم:</div><div class="cred-value" id="outId">-</div></div>
-            <div class="cred-row"><div class="cred-label">كلمة المرور:</div><div class="cred-value" id="outPass">-</div></div>
-            <div class="cred-warning">⚠️ لا تشارك هذه البيانات مع أي شخص، ولا يمكن استرجاعها بعد فقدانها</div>
-        </div>
-        <div class="action-row">
-            <button class="action-btn" onclick="copyCreds()"><svg viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="2" stroke="#0A3D62" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="#0A3D62" stroke-width="2"/></svg>نسخ</button>
-            <button class="action-btn" onclick="shareCreds()"><svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="#0A3D62" stroke-width="2" stroke-linecap="round"/><path d="M22 2l-7 20-4-9-9-4 20-7z" stroke="#0A3D62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>شارك</button>
-        </div>
-        <button class="next-btn" onclick="goDashboard()">التالي</button>
+<!-- SELECT TOOL -->
+<div id="selectToolScreen" class="screen">
+  <div class="top-bar">
+    <div class="status-pill"><span class="dot-live"></span><span class="label">Users Online:</span><span class="value" id="usersOnline1">2242</span></div>
+    <div class="status-pill"><span class="label">version:</span><span class="value">VIP</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">اختيار الأداة</div>
+    <div class="card-subtitle">اختر <span class="gold">كراش</span> ثم أكمل الخطوة التالية.</div>
+
+    <div class="tool-option" id="toolCrash" onclick="selectTool('crash')">
+      <div class="radio"></div>
+      <div class="info">
+        <div class="name">أداة كراش</div>
+        <div class="sub">Crash — تسجيل ثم الدخول لـ CRASH</div>
+      </div>
+      <div class="thumb"><img src="https://thanosx.icu/kotev2/IMG/crash.webp" alt="crash"></div>
     </div>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="tg-btn">
+      <span class="tg-left"><span class="tg-icon">✈️</span><span>Telegram @taurbobet</span></span>
+      <span class="open-pill">OPEN</span>
+    </a>
+  </div>
 </div>
 
-<div id="dashboardScreen" class="screen">
-    <div class="dash-top">
-        <div class="balance-box">
-            <div class="balance-label">الرصيد الحالي</div>
-            <div class="balance-value"><span id="balance">0.00</span> <span>جنيه</span></div>
-        </div>
-        <div class="side-btns">
-            <button onclick="openWithdraw()">سحب</button>
-            <button onclick="openDeposit()">إيداع</button>
-            <button class="logout-btn" onclick="logout()">خروج</button>
-        </div>
+<!-- SELECT PLATFORM -->
+<div id="selectPlatformScreen" class="screen">
+  <div class="top-bar">
+    <div class="status-pill"><span class="dot-live"></span><span class="label">Users Online:</span><span class="value" id="usersOnline2">2245</span></div>
+    <div class="status-pill"><span class="label">version:</span><span class="value">VIP</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">اختيار منصة الرهان (كراش)</div>
+    <div class="card-subtitle">اختر المنصة ثم اضغط الاتصال</div>
+
+    <div class="tool-option selected" onclick="selectPlatform('1xbet')">
+      <div class="radio"></div>
+      <div class="info">
+        <div class="name">1XBET</div>
+        <div class="sub">منصة 1XBET</div>
+      </div>
+      <div class="thumb"><img src="https://i.postimg.cc/Wp8ZX9TF/Screenshot-20260914-162819-Telegram.jpg" alt="1XBET"></div>
     </div>
-    <div class="user-info-bar">
-        <div><span class="lbl">ID: </span><span class="uid" id="dashUid">-</span></div>
-    </div>
-    <div class="crash-image-wrap">
-        <img src="https://raw.githubusercontent.com/turbo1-2/Swar/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A9%D9%A1%D9%A7-%D9%A1%D9%A7%D9%A2%D9%A9%D9%A2%D9%A7_1xBet.jpg" alt="Games">
-        <div class="crash-click-zone" onclick="openCrash()"></div>
-        <div class="apple-click-zone" onclick="openApple()"></div>
-    </div>
+
+    <button class="action-btn" onclick="connectToPlatform()">الاتصال بسيرفر منصة 1XBET</button>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="tg-btn">
+      <span class="tg-left"><span class="tg-icon">✈️</span><span>Telegram @taurbobet</span></span>
+      <span class="open-pill">OPEN</span>
+    </a>
+
+    <button class="back-btn" onclick="showScreen('selectToolScreen')">
+      <span class="arrow-circle">←</span><span class="txt">تغيير الأداة أو المنصة</span>
+    </button>
+  </div>
 </div>
 
-<div id="crashScreen">
-    <div class="crash-top">
-        <button class="back-btn" onclick="closeCrash()">←</button>
-        <div class="crash-balance"><span id="crashBalance">0.00</span> ج.م <span class="plus">+</span></div>
-        <div style="width:40px"></div>
+<!-- CONNECTING -->
+<div id="connectingScreen" class="screen">
+  <div class="card" style="margin-top:60px">
+    <div class="card-title">جاري الاتصال...</div>
+    <div class="card-subtitle">جاري الاتصال بسيرفر منصة <span class="gold">1XBET</span>...</div>
+    <div class="progress-outer"><div class="progress-inner" id="connectProgress" style="width:0%"></div></div>
+    <div class="progress-row">
+      <span class="progress-pct" id="connectPct">0%</span>
+      <span class="progress-txt">يرجى الانتظار...</span>
     </div>
-    <div class="crash-arena" id="crashArena">
-        <div class="label-top" id="crashLabel">انتظار الجولة...</div>
-        <div class="trail" id="trail"></div>
-        <div class="plane" id="plane"><img src="https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/file_00000000e84881f4ae05c0fdf3f58f1b.png" alt="plane"></div>
-        <div class="start-count" id="startCount">تبدأ خلال: 6</div>
-        <div class="big-text" id="bigText" style="display:none">1.00x</div>
-        <div class="win-banner" id="winBanner"></div>
-    </div>
-    <div class="crash-controls">
-        <div class="row">
-            <button class="place-btn" id="placeBtn" onclick="placeBet()">PLACE A BET</button>
-            <input class="bet-input" id="betInput" type="number" value="20">
-        </div>
-    </div>
-    <div class="players-table">
-        <div class="players-head"><div>USER</div><div>ODDS</div><div>BET</div><div>WIN</div></div>
-        <div id="playersBody"></div>
-    </div>
+  </div>
 </div>
 
-<div id="appleScreen">
-    <div class="apple-inner">
-        <div class="apple-top"><button class="apple-back-btn" onclick="closeApple()">→</button><div class="apple-balance-box"><span id="appleBalance">0.00</span> <span class="cur">ج.م</span></div></div>
-        <div class="apple-main"><div class="apple-grid-wrap"><div class="apple-mults" id="appleMults"></div><div class="apple-grid" id="appleGrid"></div></div></div>
-        <div class="apple-bottom">
-            <div class="apple-ctrl-row"><button id="ctrlMin" onclick="appleCtrl('min')">MIN</button><button id="ctrlDouble" onclick="appleCtrl('double')">X2</button><button id="ctrlHalf" onclick="appleCtrl('half')">X/2</button><button id="ctrlMax" onclick="appleCtrl('max')">MAX</button></div>
-            <div class="apple-stake-row"><button class="apple-action-btn" id="appleActionBtn" onclick="appleAction()">STAKE</button><div class="apple-stake-display"><span id="appleStakeVal">20</span></div></div>
-        </div>
+<!-- LOGIN -->
+<div id="userLogin" class="screen">
+  <div class="top-bar">
+    <div class="status-pill"><span class="dot-live"></span><span class="label">Users Online:</span><span class="value" id="usersOnline3">2250</span></div>
+    <div class="status-pill"><span class="label">version:</span><span class="value">VIP</span></div>
+  </div>
+
+  <div class="card">
+    <div class="logo-circle small">
+      <img src="https://raw.githubusercontent.com/turbo1-2/Sora1/refs/heads/main/1789152183482.png" alt="TURBO">
     </div>
+    <div class="card-title">تسجيل الدخول</div>
+
+    <div class="input-box">
+      <span class="suffix">ID</span>
+      <input id="userLoginId" type="text" placeholder="Your ID Account ?" autocomplete="off">
+    </div>
+
+    <button class="action-btn" id="userLoginBtn" onclick="userLogin()">تسجيل الدخول</button>
+    <div class="msg" id="userMsg"></div>
+
+    <button class="back-btn" onclick="showScreen('selectToolScreen')">
+      <span class="arrow-circle">←</span><span class="txt">تغيير الأداة أو المنصة</span>
+    </button>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="tg-btn">
+      <span class="tg-left"><span class="tg-icon">✈️</span><span>Telegram @taurbobet</span></span>
+      <span class="open-pill">OPEN</span>
+    </a>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="tg-btn">
+      <span class="tg-left"><span class="tg-icon">📢</span><span>VIEW CHANNEL</span></span>
+      <span class="open-pill">OPEN</span>
+    </a>
+  </div>
 </div>
 
-<div id="depositModal" class="modal">
-    <div class="modal-head"><button class="back" onclick="closeModal('depositModal')">← رجوع</button><h2>إيداع أموال</h2></div>
-    <div class="modal-body">
-        <div style="color:#2c3e50;font-weight:700;font-size:15px;margin-bottom:12px">اختر وسيلة الإيداع:</div>
-        <div class="methods-list">
-            <div class="method-item" data-m="vodafone" onclick="selectMethod(this,'vodafone')">فودافون كاش</div>
-            <div class="method-item" data-m="etisalat" onclick="selectMethod(this,'etisalat')">اتصالات كاش</div>
-            <div class="method-item" data-m="orange" onclick="selectMethod(this,'orange')">أورنج كاش</div>
-        </div>
-        <div class="deposit-info" id="depositInfo">
-            <h3 id="depMethodName">فودافون كاش</h3>
-            <p>حول المبلغ إلى الرقم التالي:</p>
-            <div class="number-row"><button onclick="copyNum()">نسخ</button><div class="num" id="depNumber">01286028671</div></div>
-            <div class="min-note">أقل مبلغ للإيداع 200 ج.م :</div>
-            <input class="amount-input" id="depAmount" type="number" placeholder="أدخل المبلغ" min="200">
-            <input class="amount-input" id="depFrom" type="tel" placeholder="رقم هاتفك الذي تم منه التحويل" maxlength="11">
-            <div class="file-box"><label for="depImage">📷 اضغط لرفع صورة التحويل</label><input type="file" id="depImage" accept="image/*" onchange="previewDepositImage(event)"><div class="filename" id="depFilename">لم يتم اختيار صورة</div><img class="preview-img" id="depPreview" alt="preview"></div>
-        </div>
-        <button class="confirm-btn green" id="depConfirmBtn" style="display:none" onclick="sendDeposit()">تأكيد الإيداع</button>
+<!-- PREDICTOR -->
+<div id="predictorScreen" class="screen">
+  <div class="top-bar">
+    <div class="status-pill"><span class="dot-live"></span><span class="label">Users Online:</span><span class="value" id="usersOnline4">2254</span></div>
+    <div class="status-pill"><span class="label">version:</span><span class="value">VIP</span></div>
+  </div>
+
+  <div class="predictor-wrap">
+
+    <div class="circle-outer-new">
+      <svg class="circle-svg-new" viewBox="0 0 300 300">
+        <defs>
+          <linearGradient id="ringGradNew" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffc107"/>
+            <stop offset="50%" stop-color="#ff9800"/>
+            <stop offset="100%" stop-color="#ff3b00"/>
+          </linearGradient>
+        </defs>
+        <circle class="circle-track-new" cx="150" cy="150" r="128"/>
+        <circle class="circle-loading-new" cx="150" cy="150" r="128"/>
+      </svg>
+      <svg class="circle-svg-new2" viewBox="0 0 300 300">
+        <defs>
+          <linearGradient id="ringGradNew2" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ff3b00" stop-opacity="0.6"/>
+            <stop offset="50%" stop-color="#ffc107" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#ff9800" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+        <circle class="circle-loading-new2" cx="150" cy="150" r="112"/>
+      </svg>
+      <div class="circle-content-new">
+        <div class="predictor-num-new waiting" id="bigValue">WAITING</div>
+      </div>
     </div>
+
+    <div class="id-row-new">
+      <span class="id-label">ID :</span>
+      <span class="id-value" id="sideUserId">1773522473</span>
+    </div>
+
+    <div class="platform-row-new">
+      <div class="platform-left-new">
+        <span class="platform-name-new">1XBET</span>
+        <div class="platform-logo-new">
+          <img src="https://i.postimg.cc/Wp8ZX9TF/Screenshot-20260914-162819-Telegram.jpg" alt="1XBET">
+        </div>
+      </div>
+      <div class="platform-active-new">
+        <span class="active-dot-new"></span>ACTIVE
+      </div>
+    </div>
+
+    <div class="timer-block-new">
+      <div class="timer-label-new">الوقت المتبقي من الكود</div>
+      <div class="timer-value-new" id="sideTimer">00:10:00</div>
+    </div>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="tg-link-new">
+      <span>Telegram @taurbobet</span>
+      <span class="tg-arrow">↗</span>
+    </a>
+
+    <a href="https://t.me/taurbobet" target="_blank" class="view-channel-new">VIEW CHANNEL ↗</a>
+
+    <div class="status-text-new" id="statusBarNew">
+      <span class="dot-new"></span>
+      <span id="statusText">CONNECTING...</span>
+    </div>
+
+  </div>
 </div>
 
-<div id="withdrawModal" class="modal">
-    <div class="modal-head"><button class="back" onclick="closeModal('withdrawModal')">← رجوع</button><h2>طلب سحب أموال</h2></div>
-    <div class="modal-body">
-        <div class="balance-green"><div class="lbl">الرصيد المتاح حالياً</div><div class="val"><span id="wdBalance">0.00</span> جنيه</div></div>
-        <div class="wd-field"><label>المبلغ المطلوب سحبه</label><input id="wdAmount" type="number" placeholder="أدخل المبلغ بالجنيه" min="50"></div>
-        <div class="wd-field"><label>رقم المحفظة (فودافون كاش، إلخ)</label><input id="wdNumber" type="tel" placeholder="أدخل رقم الهاتف للسحب" maxlength="11"><div class="wd-note">الحد الأدنى للسحب: 50 جنيه</div></div>
-        <button class="confirm-btn purple" onclick="sendWithdraw()">تأكيد طلب السحب</button>
-        <div class="wd-note">ملاحظة: يتم مراجعة طلبات السحب يدوياً للأمان</div>
-    </div>
-</div>
-
-<div id="alertBox" class="alert-box"><div class="alert-card"><h3 id="alertTitle">تم الإرسال</h3><p id="alertMsg">سيتم مراجعة طلبك</p><button onclick="closeAlert()">حسناً</button></div></div>
-<div id="toast" class="toast"></div>
+<div class="toast" id="toast"></div>
 
 <!-- ============================================================
-     🛡️ PROTECTION
+     🛡️ PROTECTION — حماية شاملة (لا تحذف أي حماية قديمة)
      ============================================================ -->
 <script>
 (function(){
-    'use strict';
-    const ALLOWED = ['localhost','127.0.0.1','zezo-59a8d.web.app','zezo-59a8d.firebaseapp.com','codepen.io','cdpn.io','jsfiddle.net','jsbin.com','github.io','netlify.app','vercel.app'];
-    const host = location.hostname;
-    if(!ALLOWED.some(d=>host===d||host.endsWith('.'+d)) && host !== ''){
-        document.documentElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#0A3D62;color:#fff;text-align:center;padding:20px"><div><h1 style="font-size:56px">⛔</h1><h2>غير مسموح</h2><p style="opacity:.8;margin-top:10px">هذا الموقع يعمل فقط من النطاق الرسمي.</p></div></div>';
-        throw new Error('Domain blocked');
-    }
-    let isTopWindow = false;
-    try{ isTopWindow = (window.top === window.self); }catch(e){ isTopWindow = false; }
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent);
+  'use strict';
 
-    const noop = function(){};
-    const fc = {log:noop,warn:noop,error:noop,info:noop,debug:noop,trace:noop,table:noop,dir:noop,assert:noop,count:noop,group:noop,groupEnd:noop,time:noop,timeEnd:noop};
-    try{ Object.defineProperty(window,'console',{get:()=>fc,set:noop,configurable:false}); }catch(e){}
-    function bl(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return false;}
-    document.addEventListener('contextmenu',bl,true);
-    document.addEventListener('dragstart',bl,true);
-    document.addEventListener('selectstart',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
-    document.addEventListener('copy',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
-    document.addEventListener('cut',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
-    document.addEventListener('keydown',function(e){
-        const k=(e.key||'').toLowerCase();
-        if(e.key==='F12'||e.keyCode===123)return bl(e);
-        if(e.ctrlKey&&e.shiftKey&&['i','j','c','k','e'].includes(k))return bl(e);
-        if(e.metaKey&&e.altKey&&['i','j','c','u'].includes(k))return bl(e);
-        if(e.ctrlKey&&['u','s','p'].includes(k))return bl(e);
-        if(e.key==='PrintScreen')return bl(e);
-    },true);
-    let dv=false;
-    const sh = document.createElement('div');
-    sh.style.cssText='position:fixed;inset:0;background:#0A3D62;color:#fff;z-index:2147483647;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;font-family:sans-serif';
-    sh.innerHTML='<div style="font-size:70px">🛡️</div><h1 style="margin:18px 0;font-size:22px">تم إيقاف الصفحة مؤقتاً</h1><p style="opacity:.85;line-height:1.9;font-size:14px">لأسباب أمنية، لا يمكن استخدام أدوات المطوّر هنا.<br>من فضلك اقفل الـ DevTools وأعد تحميل الصفحة.</p>';
-    document.addEventListener('DOMContentLoaded',()=>document.body.appendChild(sh));
-    function sOn(){if(dv)return;dv=true;sh.style.display='flex';}
-    function sOff(){if(!dv)return;dv=false;sh.style.display='none';}
-    if(isTopWindow && !isMobile){
-        let dimHits = 0;
-        setInterval(()=>{
-            const w = window.outerWidth - window.innerWidth;
-            const h = window.outerHeight - window.innerHeight;
-            if(w > 260 || h > 260){ dimHits++; if(dimHits >= 2) sOn(); }
-            else { dimHits = Math.max(0, dimHits - 1); if(dimHits === 0) sOff(); }
-        }, 1000);
+  /* ---------- 1️⃣ قفل النطاق (Domain Lock) ---------- */
+  const ALLOWED = [
+    'localhost','127.0.0.1',
+    'zezo-59a8d.web.app','zezo-59a8d.firebaseapp.com',
+    'codepen.io','cdpn.io','jsfiddle.net','jsbin.com',
+    'github.io','netlify.app','vercel.app'
+  ];
+  const host = location.hostname;
+  if(!ALLOWED.some(d=>host===d||host.endsWith('.'+d)) && host !== ''){
+    document.documentElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#000;color:#fff;text-align:center;padding:20px"><div><h1 style="font-size:56px">⛔</h1><h2>غير مسموح</h2><p style="opacity:.8;margin-top:10px">هذا الموقع يعمل فقط من النطاق الرسمي.</p></div></div>';
+    throw new Error('Domain blocked');
+  }
+
+  /* ---------- 2️⃣ كشف iframe ---------- */
+  let isTopWindow = false;
+  try{ isTopWindow = (window.top === window.self); }catch(e){ isTopWindow = false; }
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent);
+
+  /* ---------- 3️⃣ تعطيل Console ---------- */
+  const noop = function(){};
+  const fc = {log:noop,warn:noop,error:noop,info:noop,debug:noop,trace:noop,table:noop,dir:noop,assert:noop,count:noop,group:noop,groupEnd:noop,time:noop,timeEnd:noop,clear:noop,profile:noop,profileEnd:noop,exception:noop};
+  try{
+    Object.defineProperty(window,'console',{get:()=>fc,set:noop,configurable:false});
+  }catch(e){}
+
+  /* ---------- 4️⃣ منع الكليك يمين / السحب / النسخ ---------- */
+  function bl(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return false;}
+  document.addEventListener('contextmenu',bl,true);
+  document.addEventListener('dragstart',bl,true);
+  document.addEventListener('selectstart',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
+  document.addEventListener('copy',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
+  document.addEventListener('cut',e=>{const t=e.target;if(t&&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA')e.preventDefault();},true);
+
+  /* ---------- 5️⃣ منع اختصارات DevTools ---------- */
+  document.addEventListener('keydown',function(e){
+    const k=(e.key||'').toLowerCase();
+    const code = e.keyCode || e.which;
+    if(code===123 || k==='f12')return bl(e);
+    if(e.ctrlKey&&e.shiftKey&&['i','j','c','k','e','m'].includes(k))return bl(e);
+    if(e.metaKey&&e.altKey&&['i','j','c','u'].includes(k))return bl(e);
+    if(e.ctrlKey&&!e.shiftKey&&['u','s','p'].includes(k))return bl(e);
+    if(e.shiftKey && code===121)return bl(e);
+    if(k==='printscreen'){
+      try{ if(navigator.clipboard) navigator.clipboard.writeText(''); }catch(err){}
+      return bl(e);
     }
-    if(isTopWindow){
-        let dbg = 0;
-        setInterval(function(){
-            const t0 = performance.now();
-            (function(){ debugger; })();
-            const t1 = performance.now();
-            if(t1 - t0 > 150) dbg++; else dbg = Math.max(0, dbg - 1);
-            if(dbg >= 3) sOn();
-        }, 2000);
-    }
-    document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
-    let lt=0;
-    document.addEventListener('touchend',function(e){const n=Date.now();if(n-lt<=300)e.preventDefault();lt=n;},{passive:false});
-    try{Object.freeze(Object.prototype);}catch(e){}
-    try{Object.freeze(Array.prototype);}catch(e){}
-    function fp(){const s=[navigator.userAgent,navigator.language,screen.width+'x'+screen.height,screen.colorDepth,new Date().getTimezoneOffset(),navigator.hardwareConcurrency||0,navigator.platform||''].join('|');let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h).toString(36);}
-    window.__f = fp;
-    document.addEventListener('DOMContentLoaded',()=>{
-        const o = new MutationObserver(function(m){
-            m.forEach(x=>{x.addedNodes.forEach(n=>{if(n.tagName==='SCRIPT'&&n.src&&!n.src.startsWith('https://www.gstatic.com')){try{n.remove();}catch(e){}}});});
+  },true);
+
+  /* ---------- 6️⃣ كشف فتح DevTools ---------- */
+  let dv = false;
+  const sh = document.getElementById('shieldScreen');
+  function sOn(){ if(dv||!sh) return; dv=true; sh.classList.add('show'); }
+  function sOff(){ if(!dv||!sh) return; dv=false; sh.classList.remove('show'); }
+
+  // 6-أ) بكشف حجم النافذة
+  if(isTopWindow && !isMobile){
+    let dimHits = 0;
+    setInterval(()=>{
+      const w = window.outerWidth - window.innerWidth;
+      const h = window.outerHeight - window.innerHeight;
+      if(w > 260 || h > 260){ dimHits++; if(dimHits >= 2) sOn(); }
+      else { dimHits = Math.max(0, dimHits - 1); if(dimHits === 0) sOff(); }
+    }, 1000);
+  }
+
+  // 6-ب) بكشف فخ الـ debugger
+  if(isTopWindow){
+    let dbg = 0;
+    setInterval(function(){
+      const t0 = performance.now();
+      (function(){ debugger; })();
+      const t1 = performance.now();
+      if(t1 - t0 > 150) dbg++; else dbg = Math.max(0, dbg - 1);
+      if(dbg >= 3) sOn();
+    }, 2000);
+  }
+
+  /* ---------- 7️⃣ منع الزووم + الدبل تاب ---------- */
+  document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
+  let lt=0;
+  document.addEventListener('touchend',function(e){
+    const n=Date.now();
+    if(n-lt<=300)e.preventDefault();
+    lt=n;
+  },{passive:false});
+
+  /* ---------- 8️⃣ تجميد Object و Array ---------- */
+  try{Object.freeze(Object.prototype);}catch(e){}
+  try{Object.freeze(Array.prototype);}catch(e){}
+
+  /* ---------- 9️⃣ بصمة الجهاز (Fingerprint) ---------- */
+  function fp(){
+    const s=[
+      navigator.userAgent,
+      navigator.language,
+      screen.width+'x'+screen.height,
+      screen.colorDepth,
+      new Date().getTimezoneOffset(),
+      navigator.hardwareConcurrency||0,
+      navigator.platform||''
+    ].join('|');
+    let h=0;
+    for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0; }
+    return Math.abs(h).toString(36);
+  }
+  window.__f = fp;
+
+  /* ---------- 🔟 مراقبة السكريبتات المحقونة ---------- */
+  document.addEventListener('DOMContentLoaded',()=>{
+    const o = new MutationObserver(function(m){
+      m.forEach(x=>{
+        x.addedNodes.forEach(n=>{
+          if(n.tagName==='SCRIPT' && n.src && !n.src.startsWith('https://www.gstatic.com')){
+            try{ n.remove(); }catch(e){}
+          }
         });
-        o.observe(document.documentElement,{childList:true,subtree:true});
+      });
     });
-    try{const of=window.fetch;Object.defineProperty(window,'fetch',{value:function(){return of.apply(this,arguments);},writable:false,configurable:false});}catch(e){}
+    o.observe(document.documentElement,{childList:true,subtree:true});
+  });
+
+  /* ---------- 1️⃣1️⃣ قفل الـ fetch ---------- */
+  try{
+    const of = window.fetch;
+    Object.defineProperty(window,'fetch',{
+      value: function(){ return of.apply(this, arguments); },
+      writable: false, configurable: false
+    });
+  }catch(e){}
+
 })();
 </script>
 
@@ -426,667 +594,288 @@ body{background:#fff;color:#333;font-family:'Segoe UI',Tahoma,Arial,sans-serif;m
      ============================================================ -->
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import {getDatabase, ref, get, set, update, push, onValue, remove} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import {getDatabase, ref, get, onValue} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAUc2C9hG9VE7RECiW19QXjNZqVH96sFE",
-    authDomain: "zezo-59a8d.firebaseapp.com",
-    databaseURL: "https://zezo-59a8d-default-rtdb.firebaseio.com",
-    projectId: "zezo-59a8d",
-    storageBucket: "zezo-59a8d.firebasestorage.app",
-    messagingSenderId: "49183098248",
-    appId: "1:49183098248:web:37e3fb16744042a1bb263d"
+  apiKey: "AIzaSyAUc2C9hG9VE7RECiW19QXjNZqVH96sFE",
+  authDomain: "zezo-59a8d.firebaseapp.com",
+  databaseURL: "https://zezo-59a8d-default-rtdb.firebaseio.com",
+  projectId: "zezo-59a8d",
+  storageBucket: "zezo-59a8d.firebasestorage.app",
+  messagingSenderId: "49183098248",
+  appId: "1:49183098248:web:37e3fb16744042a1bb263d"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const db  = getDatabase(app);
 
-/* ============================================================
-   ⚙️ إعدادات اللاعبين الوهميين
-   - العدد عشوائي بين BOTS_MIN و BOTS_MAX كل جولة
-   - أقصى ODDS = 30x (للّاعبين والطيارة)
-   - الأدمن يتحكم في بادئة الـ ID فقط لايف من settings/idPrefix
-   ============================================================ */
-const BOTS_MIN = 15;                // ✅ أقل عدد لاعبين في الجولة
-const BOTS_MAX = 25;                // ✅ أقصى عدد لاعبين
-const MAX_ODDS = 30;                // ✅ أقصى أودز مسموح (30x)
-let _botPrefix = '17855';           // البادئة الافتراضية (أول 5 أرقام)
+const PATH_PREDICT = 'crashPredictions/current';
+const MIN_BALANCE  = 200;
+const SESSION_MS   = 10 * 60 * 1000;
 
-/* Live: لما الأدمن يغير البادئة من Firebase تتحدث فوراً */
-onValue(ref(db,'settings/idPrefix'), s => {
-    if(s.exists()){
-        let v = String(s.val()).trim().replace(/\D/g,'');
-        if(v.length >= 5) v = v.slice(0,5);
-        else v = v.padEnd(5,'0');
-        _botPrefix = v;
-    }
-});
+let userData = null;
+let predictListener = null;
+let sessionTimerInterval = null;
+let kickListener = null;
 
-/* دعم قديم: settings/bots/prefix */
-onValue(ref(db,'settings/bots/prefix'), s => {
-    if(s.exists()){
-        let v = String(s.val()).trim().replace(/\D/g,'');
-        if(v.length >= 5) v = v.slice(0,5);
-        else v = v.padEnd(5,'0');
-        _botPrefix = v;
-    }
-});
-
-let _u="", _bal=0, _chk=0, _list=null, _kick=null, _kd=false;
-let _dep={v:"01286028671",e:"01186028671",o:"01086028671"}, _m=null, _img="", _pc=null;
-let _rs="idle", _rt=null, _ct=null, _mult=1, _cp=0, _bet={a:0,act:false,cash:false};
-let _bp=[];
-
-/* ============ ☎️ أرقام الإيداع Live ============ */
-onValue(ref(db,'settings/vodafoneNumber'), s => {
-    if(s.exists()){ _dep.v = s.val(); _refreshDepNum(); }
-});
-onValue(ref(db,'settings/etisalatNumber'), s => {
-    if(s.exists()){ _dep.e = s.val(); _refreshDepNum(); }
-});
-onValue(ref(db,'settings/orangeNumber'), s => {
-    if(s.exists()){ _dep.o = s.val(); _refreshDepNum(); }
-});
-
-function _refreshDepNum(){
-    if(!_m) return;
-    const map = {vodafone:_dep.v, etisalat:_dep.e, orange:_dep.o};
-    const el = document.getElementById('depNumber');
-    if(el) el.textContent = map[_m] || '';
+window.showScreen = function(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+};
+window.toast = function(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(()=>el.classList.remove('show'), 2200);
+};
+function fmtHMS(ms){
+  if(ms <= 0) return '00:00:00';
+  const totalSec = Math.floor(ms / 1000);
+  const hrs = Math.floor(totalSec / 3600);
+  const mins = Math.floor((totalSec % 3600) / 60);
+  const secs = totalSec % 60;
+  return `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+}
+function sanitizeUname(u){
+  return String(u||'').trim().replace(/[.#$/\[\]]/g,'_');
 }
 
-/* ============ SESSION ============ */
-const _SS_KEY = 'x1_session_v3';
-function _saveSession(id, pass){
-    try{ const data = {id,pass,at:Date.now()}; localStorage.setItem(_SS_KEY, btoa(unescape(encodeURIComponent(JSON.stringify(data))))); }catch(e){}
-}
-function _loadSession(){
-    try{
-        const raw = localStorage.getItem(_SS_KEY);
-        if(!raw) return null;
-        const data = JSON.parse(decodeURIComponent(escape(atob(raw))));
-        if(!data || !data.id) return null;
-        if(Date.now() - (data.at||0) > 30*24*60*60*1000){ localStorage.removeItem(_SS_KEY); return null; }
-        return data;
-    }catch(e){ return null; }
-}
-function _clearSession(){ try{ localStorage.removeItem(_SS_KEY); }catch(e){} }
-
-async function _autoLogin(){
-    const ss = _loadSession();
-    if(!ss) return false;
-    const un = _safe(ss.id);
-    try{
-        const s = await get(ref(db,'users/'+un));
-        if(!s.exists()){ _clearSession(); return false; }
-        const st = s.val();
-        const h = await _hp(ss.pass);
-        if(String(st.password) !== h){ _clearSession(); return false; }
-        _u = un; _setBal(st.balance||0); _updUI();
-        _startBal(_u); _startKick(_u);
-        document.getElementById('loginUser').value = un;
-        document.getElementById('loginPass').value = ss.pass;
-        document.getElementById('dashUid').textContent = un;
-        _scr('dashboardScreen');
-        return true;
-    }catch(e){ return false; }
-}
-
-/* ============ CHECKSUM ============ */
-function _hash(n){return ((n*2654435761)^0x5bd1e995)>>>0;}
-function _setBal(v){_bal=Number(v||0);_chk=_hash(Math.round(_bal*100));}
-function _verifyBal(){
-    if(_hash(Math.round(_bal*100))!==_chk){
-        if(_u){get(ref(db,'users/'+_u+'/balance')).then(s=>{if(s.exists()){_setBal(s.val());_updUI();}});}
-        return false;
-    }
-    return true;
-}
-
-/* ============ HELPERS ============ */
-function _scr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');const c=document.getElementById('crashScreen');if(c)c.classList.remove('active');const s=document.getElementById('successScreen');if(s)s.classList.remove('active');}
-function _ok(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('successScreen').classList.add('active');}
-function _toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';clearTimeout(window._tt);window._tt=setTimeout(()=>el.style.display='none',2500);}
-function _eye(id,b){const i=document.getElementById(id);if(i.type==='password'){i.type='text';b.textContent='🙈';}else{i.type='password';b.textContent='👁';}}
-function _alert(t,m){document.getElementById('alertTitle').textContent=t;document.getElementById('alertMsg').textContent=m;document.getElementById('alertBox').classList.add('show');}
-function _closeA(){document.getElementById('alertBox').classList.remove('show');}
-function _openM(id){document.getElementById(id).classList.add('show');}
-function _closeM(id){document.getElementById(id).classList.remove('show');}
-function _safe(u){return String(u||'').trim().replace(/[.#$/\[\]]/g,'_');}
-async function _hp(p){const e=new TextEncoder().encode(p+'|ZezoSalt_2026_x1');const b=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
-function _genId(){let id='1';for(let i=0;i<9;i++)id+=Math.floor(Math.random()*10);return id;}
-function _genPwd(){const c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';let p='';for(let i=0;i<8;i++)p+=c[Math.floor(Math.random()*c.length)];return p;}
-async function _uniqId(){for(let i=0;i<20;i++){const id=_genId();try{const s=await get(ref(db,'users/'+id));if(!s.exists())return id;}catch(e){return id;}}return '1'+Date.now().toString().slice(-9);}
-
-/* ============ LISTENERS ============ */
-function _startBal(u){_stopBal();_list=onValue(ref(db,'users/'+u+'/balance'),s=>{if(!s.exists())return;if(_kd)return;_setBal(s.val());_updUI();});}
-function _stopBal(){if(_list){try{_list();}catch(e){}_list=null;}}
-function _startKick(u){
-    if(_kick){_kick();_kick=null;}
-    _kd=false;
-    _kick=onValue(ref(db,'deletedUsers/'+u),s=>{
-        if(!s.exists())return;
-        if(_kd)return;
-        _kd=true;_stopBal();
-        try{localStorage.clear();sessionStorage.clear();}catch(e){}
-        const c=document.getElementById('crashScreen');if(c)c.classList.remove('active');
-        const a=document.getElementById('appleScreen');if(a)a.classList.remove('active');
-        document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'));
-        clearInterval(_rt);clearInterval(_ct);
-        _u="";_setBal(0);_updUI();
-        _alert('⚠️ تم حذف حسابك','تم حذف حسابك من قِبل الإدارة. سيتم تسجيل خروجك الآن.');
-        setTimeout(()=>{_closeA();_scr('loginScreen');},1500);
+function startOnlineCounter(){
+  const base = 2242;
+  const ids = ['usersOnline1','usersOnline2','usersOnline3','usersOnline4'];
+  setInterval(()=>{
+    const n = base + Math.floor(Math.random()*40);
+    ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.textContent = n;
     });
+  }, 3000);
 }
 
-/* ============ AUTH ============ */
-async function _login(){
-    const u=document.getElementById('loginUser').value.trim();
-    const p=document.getElementById('loginPass').value.trim();
-    if(!u||!p){_toast('من فضلك أدخل الـ ID وكلمة المرور');return;}
-    const un=_safe(u);
+function playSplash(callback){
+  const sp = document.getElementById('splashScreen');
+  const bar = document.getElementById('splashProgress');
+  const pct = document.getElementById('splashPct');
+  sp.classList.add('active');
+  let p = 0;
+  bar.style.width = '0%';
+  pct.textContent = '0%';
+  const iv = setInterval(()=>{
+    p += Math.floor(Math.random()*9)+4;
+    if(p >= 100){ p = 100; clearInterval(iv); setTimeout(()=>{ sp.classList.remove('active'); if(callback) callback(); }, 400); }
+    bar.style.width = p + '%';
+    pct.textContent = p + '%';
+  }, 130);
+}
+
+window.selectTool = function(tool){
+  document.getElementById('toolCrash').classList.add('selected');
+  setTimeout(()=>{ window.showScreen('selectPlatformScreen'); }, 250);
+};
+window.selectPlatform = function(){};
+
+window.connectToPlatform = function(){
+  window.showScreen('connectingScreen');
+  const bar = document.getElementById('connectProgress');
+  const pct = document.getElementById('connectPct');
+  let p = 0;
+  bar.style.width = '0%';
+  pct.textContent = '0%';
+  const iv = setInterval(()=>{
+    p += Math.floor(Math.random()*10)+3;
+    if(p >= 100){ p = 100; clearInterval(iv); setTimeout(()=>{ window.showScreen('userLogin'); }, 500); }
+    bar.style.width = p + '%';
+    pct.textContent = p + '%';
+  }, 150);
+};
+
+window.userLogin = async function(){
+  const rawId = document.getElementById('userLoginId').value.trim();
+  const msg = document.getElementById('userMsg');
+  const btn = document.getElementById('userLoginBtn');
+
+  msg.classList.remove('show');
+
+  if(!rawId){
+    msg.textContent = '⚠️ أدخل آي دي المنصة';
+    msg.className = 'msg error show';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = 'جاري التحقق<span class="loader"></span>';
+
+  try{
+    const uname = sanitizeUname(rawId);
+
+    const uSnap = await get(ref(db, 'users/' + uname));
+    if(!uSnap.exists()){
+      msg.textContent = '❌ الحساب ده مش موجود في المنصة';
+      msg.className = 'msg error show';
+      btn.disabled = false; btn.innerHTML = 'تسجيل الدخول';
+      return;
+    }
+
+    const bannedSnap = await get(ref(db, 'bannedUsers/' + uname));
+    if(bannedSnap.exists()){
+      msg.textContent = '🚫 هذا الحساب محذوف من الإدارة';
+      msg.className = 'msg error show';
+      btn.disabled = false; btn.innerHTML = 'تسجيل الدخول';
+      return;
+    }
+    const delSnap = await get(ref(db, 'deletedUsers/' + uname));
+    if(delSnap.exists()){
+      msg.textContent = '🚫 هذا الحساب محذوف من الإدارة';
+      msg.className = 'msg error show';
+      btn.disabled = false; btn.innerHTML = 'تسجيل الدخول';
+      return;
+    }
+
+    const uData = uSnap.val() || {};
+    const bal = Number(uData.balance || 0);
+    if(bal < MIN_BALANCE){
+      msg.textContent = `💰 رصيدك ${bal.toFixed(2)} ج.م — محتاج ${MIN_BALANCE} ج.م على الأقل`;
+      msg.className = 'msg error show';
+      btn.disabled = false; btn.innerHTML = 'تسجيل الدخول';
+      return;
+    }
+
+    userData = {
+      userId: uname,
+      displayId: rawId,
+      expiresAt: Date.now() + SESSION_MS
+    };
+    try{ localStorage.setItem('predictor_session', JSON.stringify(userData)); }catch(e){}
+
+    msg.textContent = '✅ تم فتح التوقعات لمدة 10 دقائق';
+    msg.className = 'msg success show';
+
+    setTimeout(()=>{
+      document.getElementById('userLoginId').value = '';
+      msg.classList.remove('show');
+      playSplash(()=>enterPredictor());
+    }, 700);
+
+  }catch(e){
+    msg.textContent = '❌ فشل الاتصال بالسيرفر';
+    msg.className = 'msg error show';
+  }
+  btn.disabled = false; btn.innerHTML = 'تسجيل الدخول';
+};
+
+window.userLogout = function(){
+  if(predictListener){ predictListener(); predictListener = null; }
+  if(sessionTimerInterval){ clearInterval(sessionTimerInterval); sessionTimerInterval = null; }
+  if(kickListener){ kickListener(); kickListener = null; }
+  try{ localStorage.removeItem('predictor_session'); }catch(e){}
+  userData = null;
+  window.showScreen('selectToolScreen');
+};
+
+function enterPredictor(){
+  if(!userData) return;
+  document.getElementById('sideUserId').textContent = userData.displayId || userData.userId;
+  window.showScreen('predictorScreen');
+  startSessionTimer();
+  startPredictorListener();
+  startKickListener(userData.userId);
+}
+
+function startSessionTimer(){
+  if(sessionTimerInterval) clearInterval(sessionTimerInterval);
+  updateSessionTimer();
+  sessionTimerInterval = setInterval(updateSessionTimer, 1000);
+}
+function updateSessionTimer(){
+  const el = document.getElementById('sideTimer');
+  if(!userData) return;
+  const left = userData.expiresAt - Date.now();
+  if(left <= 0){
+    el.textContent = '00:00:00';
+    el.classList.add('warning');
+    clearInterval(sessionTimerInterval);
+    setTimeout(()=>{ window.toast('⌛ انتهت مدة الـ 10 دقائق'); window.userLogout(); }, 800);
+    return;
+  }
+  el.textContent = fmtHMS(left);
+  if(left < 60000) el.classList.add('warning');
+  else el.classList.remove('warning');
+}
+
+function startPredictorListener(){
+  if(predictListener) predictListener();
+  predictListener = onValue(ref(db, PATH_PREDICT), (snap)=>{
+    const statusBar = document.getElementById('statusBarNew');
+    const txt = document.getElementById('statusText');
+    const big = document.getElementById('bigValue');
+
+    if(!snap.exists()){
+      statusBar.classList.add('offline');
+      txt.textContent = 'WAITING FOR DATA';
+      big.className = 'predictor-num-new waiting';
+      big.textContent = 'WAITING';
+      return;
+    }
+    const d = snap.val();
+    const point = Number(d.crashPoint);
+
+    statusBar.classList.remove('offline');
+    txt.textContent = 'LIVE • CONNECTED';
+
+    big.className = 'predictor-num-new';
+    const val = (point >= 10 ? point.toFixed(2) : point.toFixed(2));
+    big.innerHTML = `${val}<span class="x-symbol">x</span>`;
+
+    big.classList.remove('updated');
+    void big.offsetWidth;
+    big.classList.add('updated');
+  });
+}
+
+function startKickListener(uname){
+  if(kickListener){ kickListener(); kickListener = null; }
+  kickListener = onValue(ref(db, 'deletedUsers/' + uname), (snap)=>{
+    if(!snap.exists()) return;
+    try{ localStorage.removeItem('predictor_session'); }catch(e){}
+    userData = null;
+    window.toast('🚫 تم حذف حسابك');
+    setTimeout(()=>{ window.showScreen('selectToolScreen'); }, 1200);
+  });
+}
+
+async function restoreSession(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('predictor_session') || 'null');
+    if(!saved || !saved.userId || !saved.expiresAt) return;
+    if(saved.expiresAt < Date.now()){ localStorage.removeItem('predictor_session'); return; }
+
     try{
-        const b=await get(ref(db,'bannedUsers/'+un));
-        if(b.exists()){_alert('حساب محذوف','هذا الحساب تم حذفه من قِبل الإدارة.');return;}
-        const d=await get(ref(db,'deletedUsers/'+un));
-        if(d.exists()){_alert('حساب محذوف','هذا الحساب تم حذفه من قِبل الإدارة.');return;}
-        const s=await get(ref(db,'users/'+un));
-        if(!s.exists()){_alert('حساب غير موجود','تأكد من الـ ID وكلمة المرور.\n\nالـ ID اللي دخلته: '+un);return;}
-        const st=s.val();
-        const h=await _hp(p);
-        if(String(st.password)!==h){_alert('بيانات خاطئة','كلمة المرور غير صحيحة.\n\nID: '+un+'\nالباسورد اللي دخلته: '+p);return;}
-        _u=un;_setBal(st.balance||0);_updUI();
-        _startBal(_u);_startKick(_u);
-        _saveSession(un, p);
-        document.getElementById('dashUid').textContent = un;
-        _scr('dashboardScreen');
-    }catch(e){_toast('فشل الاتصال');}
-}
+      const snap = await get(ref(db, 'users/' + saved.userId));
+      if(!snap.exists()){ localStorage.removeItem('predictor_session'); return; }
+      const uData = snap.val() || {};
+      const bal = Number(uData.balance || 0);
+      if(bal < MIN_BALANCE){ localStorage.removeItem('predictor_session'); return; }
 
-async function _signup(){
-    const btn=document.getElementById('signupBtn');
-    if(btn.disabled)return;
-    btn.disabled=true;btn.textContent='جاري إنشاء الحساب...';
-    const promo=document.getElementById('regPromo').value.trim();
-    try{
-        const un=await _uniqId();
-        const pw=_genPwd();
-        const h=await _hp(pw);
-        try{await remove(ref(db,'deletedUsers/'+un));}catch(e){}
-        await set(ref(db,'users/'+un),{password:h,fp:window.__f?window.__f():null,balance:0,promo:promo||null,country:'EG',currency:'EGP',bonus:'sports',createdAt:Date.now()});
-        _pc={id:un,pass:pw};
-        _saveSession(un, pw);
-        document.getElementById('outId').textContent=un;
-        document.getElementById('outPass').textContent=pw;
-        _ok();
-    }catch(e){_toast('فشل إنشاء الحساب، حاول مرة أخرى');}
-    finally{btn.disabled=false;btn.textContent='إنشاء الحساب';}
-}
+      const bannedSnap = await get(ref(db, 'bannedUsers/' + saved.userId));
+      if(bannedSnap.exists()){ localStorage.removeItem('predictor_session'); return; }
+      const delSnap = await get(ref(db, 'deletedUsers/' + saved.userId));
+      if(delSnap.exists()){ localStorage.removeItem('predictor_session'); return; }
 
-async function _go(){
-    if(!_pc){_scr('loginScreen');return;}
-    const {id,pass}=_pc;_pc=null;_u=id;
-    try{
-        const s=await get(ref(db,'users/'+_u));
-        _setBal(s.exists()?Number(s.val().balance||0):0);
-        _updUI();_startBal(_u);_startKick(_u);
-        document.getElementById('loginUser').value=id;
-        document.getElementById('loginPass').value=pass;
-        document.getElementById('dashUid').textContent = id;
-        _saveSession(id, pass);
-        _scr('dashboardScreen');
-    }catch(e){_scr('loginScreen');}
-}
-
-/* ============ LOGOUT ============ */
-function _logout(){
-    _stopBal();
-    if(_kick){try{_kick();}catch(e){}_kick=null;}
-    _u="";_setBal(0);_updUI();
-    clearInterval(_rt);clearInterval(_ct);
-    const c=document.getElementById('crashScreen');if(c)c.classList.remove('active');
-    const a=document.getElementById('appleScreen');if(a)a.classList.remove('active');
-    document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'));
-    const ss=_loadSession();
-    if(ss){document.getElementById('loginUser').value=ss.id;document.getElementById('loginPass').value=ss.pass;}
-    _scr('loginScreen');
-    _toast('تم تسجيل الخروج — بياناتك محفوظة ✅');
-}
-
-/* ============ COPY / SHARE ============ */
-function _copy(){
-    const t=`ID: ${document.getElementById('outId').textContent}\nPassword: ${document.getElementById('outPass').textContent}`;
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>_toast('تم نسخ البيانات ✅')).catch(()=>_toast('فشل النسخ'));}
-    else{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');_toast('تم نسخ البيانات ✅');}catch(e){_toast('فشل النسخ');}document.body.removeChild(a);}
-}
-function _share(){const i=document.getElementById('outId').textContent;const p=document.getElementById('outPass').textContent;const t=`حسابي في 1xBet\nID: ${i}\nPassword: ${p}`;if(navigator.share){navigator.share({title:'حساب 1xBet',text:t}).catch(()=>{});}else{_copy();}}
-function _updUI(){const f=Number(_bal||0).toFixed(2);const b=document.getElementById('balance');if(b)b.textContent=f;const c=document.getElementById('crashBalance');if(c)c.textContent=f;const w=document.getElementById('wdBalance');if(w)w.textContent=f;const a=document.getElementById('appleBalance');if(a)a.textContent=f;}
-function _save(){if(!_u||_kd)return;if(!_verifyBal())return;update(ref(db,'users/'+_u),{balance:Number(_bal),updatedAt:Date.now()}).catch(()=>{});}
-
-/* ============ DEPOSIT ============ */
-function _openDep(){
-    _m=null;_img="";
-    document.querySelectorAll('.method-item').forEach(x=>x.classList.remove('active'));
-    document.getElementById('depositInfo').classList.remove('show');
-    document.getElementById('depConfirmBtn').style.display='none';
-    document.getElementById('depFilename').textContent='لم يتم اختيار صورة';
-    document.getElementById('depPreview').style.display='none';
-    document.getElementById('depImage').value='';
-    _openM('depositModal');
-}
-function _selM(el,m){
-    document.querySelectorAll('.method-item').forEach(x=>x.classList.remove('active'));
-    el.classList.add('active');_m=m;
-    const n={vodafone:'فودافون كاش',etisalat:'اتصالات كاش',orange:'أورنج كاش'};
-    document.getElementById('depMethodName').textContent=n[m];
-    const map = {vodafone:_dep.v, etisalat:_dep.e, orange:_dep.o};
-    document.getElementById('depNumber').textContent = map[m] || '';
-    document.getElementById('depositInfo').classList.add('show');
-    document.getElementById('depConfirmBtn').style.display='block';
-}
-function _copyNum(){const n=document.getElementById('depNumber').textContent;navigator.clipboard.writeText(n).then(()=>_toast('تم نسخ الرقم ✅')).catch(()=>_toast('فشل النسخ'));}
-function _prevImg(e){const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){_toast('اختار صورة فقط');return;}if(f.size>2*1024*1024){_toast('حجم الصورة أكبر من 2MB');return;}const r=new FileReader();r.onload=(ev)=>{_img=ev.target.result;document.getElementById('depPreview').src=ev.target.result;document.getElementById('depPreview').style.display='block';document.getElementById('depFilename').textContent=f.name;};r.readAsDataURL(f);}
-async function _sendDep(){
-    if(!_m){_toast('اختر وسيلة الإيداع');return;}
-    const a=Number(document.getElementById('depAmount').value);
-    const fr=document.getElementById('depFrom').value.replace(/\D/g,'');
-    if(!a||a<200){_toast('أقل مبلغ 200 ج.م');return;}
-    if(fr.length!==11){_toast('رقم التحويل 11 رقم');return;}
-    if(!_img){_toast('ارفع صورة التحويل');return;}
-    try{
-        await push(ref(db,'requests'),{type:'deposit',user:_u,amount:a,method:_m,depositNumber:{vodafone:_dep.v,etisalat:_dep.e,orange:_dep.o}[_m],fromNumber:fr,image:_img,status:'pending',date:new Date().toLocaleString('ar-EG'),createdAt:Date.now()});
-        document.getElementById('depAmount').value='';document.getElementById('depFrom').value='';_img='';
-        _closeM('depositModal');
-        _alert('تم الإرسال','تم إرسال طلب الإيداع بنجاح.');
-    }catch(e){_toast('فشل الطلب');}
-}
-
-/* ============ WITHDRAW ============ */
-function _openWd(){document.getElementById('wdBalance').textContent=Number(_bal||0).toFixed(2);_openM('withdrawModal');}
-async function _sendWd(){
-    const a=Number(document.getElementById('wdAmount').value);
-    const n=document.getElementById('wdNumber').value.replace(/\D/g,'');
-    if(!a||a<50){_toast('أقل سحب 50 ج.م');return;}
-    if(a>_bal){_toast('الرصيد غير كافٍ');return;}
-    if(n.length!==11){_toast('رقم المحفظة 11 رقم');return;}
-    try{
-        await push(ref(db,'requests'),{type:'withdraw',user:_u,amount:a,withdrawNumber:n,status:'pending',date:new Date().toLocaleString('ar-EG'),createdAt:Date.now()});
-        document.getElementById('wdAmount').value='';document.getElementById('wdNumber').value='';
-        _closeM('withdrawModal');
-        _alert('تم الإرسال','تم إرسال طلب السحب بنجاح.');
-    }catch(e){_toast('فشل الطلب');}
-}
-
-/* ============ PREDICTION ============ */
-async function _pushP(p){try{await set(ref(db,'crashPredictions/current'),{crashPoint:Number(p),at:Date.now()});}catch(e){}}
-async function _pushH(p){
-    try{
-        await push(ref(db,'crashPredictions/history'),{crashPoint:Number(p),at:Date.now()});
-        const s=await get(ref(db,'crashPredictions/history'));
-        if(s.exists()){
-            const arr=[];s.forEach(c=>arr.push({key:c.key,at:c.val().at}));
-            if(arr.length>50){arr.sort((a,b)=>a.at-b.at);const del=arr.slice(0,arr.length-50);for(const x of del){try{await remove(ref(db,'crashPredictions/history/'+x.key));}catch(e){}}}
-        }
+      userData = {
+        userId: saved.userId,
+        displayId: saved.displayId || saved.userId,
+        expiresAt: saved.expiresAt
+      };
+      playSplash(()=>enterPredictor());
     }catch(e){}
+  }catch(e){}
 }
 
-/* ============ CRASH GAME ============ */
-function _openCrash(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('successScreen').classList.remove('active');
-    document.getElementById('crashScreen').classList.add('active');
-    _updUI();
-    setTimeout(_cdown,150);
-}
-function _closeCrash(){
-    document.getElementById('crashScreen').classList.remove('active');
-    document.getElementById('crashScreen').classList.remove('won');
-    _scr('dashboardScreen');
-    clearInterval(_rt);clearInterval(_ct);
-}
-function _rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function _shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-/* ============================================================
-   ✅ توليد ID اللاعب: بادئة (5) + رقم عشوائي + 4 نجوم ∗
-   النتيجة: 17855X∗∗∗∗  (10 خانات — النجوم على نفس السطر)
-   ============================================================ */
-function _genBotId(){
-    const prefix = (_botPrefix || '17855').padEnd(5,'0').slice(0,5);
-    const d = Math.floor(Math.random()*10);
-    return prefix + d + '\u2217\u2217\u2217\u2217';
-}
-
-/* ============================================================
-   ✅ عدد اللاعبين عشوائي كل جولة بين BOTS_MIN و BOTS_MAX
-   ✅ أقصى أودز للاعب = MAX_ODDS (30x)
-   ============================================================ */
-function _mkBots(){
-    _bp=[];
-    const c = _rand(BOTS_MIN, BOTS_MAX);
-    const usedIds = new Set();
-    for(let i=0;i<c;i++){
-        let bid;
-        let guard = 0;
-        do{ bid = _genBotId(); guard++; } while(usedIds.has(bid) && guard < 50);
-        usedIds.add(bid);
-
-        let co, r = Math.random();
-        if(r<.35)      co=Number((1.15+Math.random()*.5).toFixed(2));   // 1.15 - 1.65
-        else if(r<.65) co=Number((1.8+Math.random()*1.2).toFixed(2));   // 1.8  - 3.0
-        else if(r<.88) co=Number((3+Math.random()*4).toFixed(2));       // 3    - 7
-        else if(r<.97) co=Number((7+Math.random()*8).toFixed(2));       // 7    - 15
-        else           co=Number((15+Math.random()*15).toFixed(2));     // 15   - 30
-        if(co > MAX_ODDS) co = MAX_ODDS;   // ✅ أقصى حاجة 30x
-
-        const ba = [10,20,50,100,200,500,1000][_rand(0,6)];
-        _bp.push({
-            id:'p'+Date.now()+'_'+i,
-            name:bid,
-            cashout:co,
-            bet:ba,
-            state:'waiting'
-        });
-    }
-    _rBots();
-}
-function _rBots(){
-    const b = document.getElementById('playersBody');
-    b.innerHTML = '';
-    _bp.forEach(p=>{
-        const r = document.createElement('div');
-        r.className = 'players-row';
-        r.dataset.pid = p.id;
-        r.innerHTML = `<div class="col-user">${p.name}</div><div class="col-odds">-</div><div class="col-bet">${p.bet} ج.م</div><div class="col-win">-</div>`;
-        b.appendChild(r);
-    });
-}
-function _upBot(pid,w,f,wi){const r=document.querySelector(`.players-row[data-pid="${pid}"]`);if(!r)return;const o=r.querySelector('.col-odds');const wn=r.querySelector('.col-win');if(w){o.textContent=f.toFixed(2)+'x';o.classList.add('win');wn.textContent=wi.toFixed(1);}else{o.textContent='LOST';o.classList.add('lose');wn.textContent='0';}}
-function _addMe(w,f,ba,wa){const b=document.getElementById('playersBody');const o=document.querySelector('.players-row.me');if(o)o.remove();const r=document.createElement('div');r.className='players-row me';r.dataset.pid='me';const oh=w?`<div class="col-odds win">${f.toFixed(2)}x</div>`:`<div class="col-odds lose">LOST</div>`;r.innerHTML=`<div class="col-user" style="color:#f0c419">${_u||'أنت'}</div>${oh}<div class="col-bet">${ba} ج.م</div><div class="col-win" style="color:#f0c419">${wa?wa.toFixed(1):'0'}</div>`;b.insertBefore(r,b.firstChild);}
-
-/* ============================================================
-   ✅ Crash Point — أقصى حاجة 30x
-   ============================================================ */
-function _genCP(){
-    const dice = Math.random();
-    let p;
-    if(dice < 0.08)       p = 1.00 + Math.random() * 0.15;   // 1.00 - 1.15
-    else if(dice < 0.30)  p = 1.15 + Math.random() * 0.85;   // 1.15 - 2.00
-    else if(dice < 0.55)  p = 2.00 + Math.random() * 2.00;   // 2.00 - 4.00
-    else if(dice < 0.75)  p = 4.00 + Math.random() * 3.00;   // 4.00 - 7.00
-    else if(dice < 0.90)  p = 7.00 + Math.random() * 8.00;   // 7.00 - 15.00
-    else if(dice < 0.98)  p = 15.00 + Math.random() * 10.00; // 15.00 - 25.00
-    else                  p = 25.00 + Math.random() * 5.00;  // 25.00 - 30.00
-    p += (Math.random() - 0.5) * 0.1;
-    if(p < 1) p = 1.00;
-    if(p > MAX_ODDS) p = MAX_ODDS;   // ✅ أقصى حاجة 30x
-    return Number(p.toFixed(2));
-}
-
-/* ✅ عدّاد 6 ثواني */
-function _cdown(){
-    clearInterval(_rt);clearInterval(_ct);
-    _rs='countdown';_mult=1;_bet={a:0,act:false,cash:false};
-    _cp=_genCP();
-    _pushP(_cp);
-    const cs=document.getElementById('crashScreen');
-    cs.classList.remove('won');
-    document.getElementById('crashLabel').textContent='انتظار الجولة...';
-    document.getElementById('crashLabel').className='label-top';
-    document.getElementById('bigText').style.display='none';
-    document.getElementById('bigText').className='big-text';
-    document.getElementById('plane').style.display='none';
-    document.getElementById('trail').style.display='none';
-    document.getElementById('winBanner').className='win-banner';
-    const sc=document.getElementById('startCount');
-    sc.style.display='block';sc.classList.add('show');
-    const pb=document.getElementById('placeBtn');
-    pb.textContent='PLACE A BET';
-    pb.classList.remove('cashout','accepted');
-    _mkBots();
-    let s=6;
-    sc.textContent='تبدأ خلال: '+s;
-    _ct=setInterval(()=>{
-        s--;
-        if(s>0){sc.textContent='تبدأ خلال: '+s;}
-        else{clearInterval(_ct);sc.style.display='none';sc.classList.remove('show');_startR();}
-    },1000);
-}
-
-/* ✅ سرعة ثابتة: 1.25x كل ثانية */
-function _startR(){
-    clearInterval(_rt);
-    _rs='running';_mult=1;
-    document.getElementById('crashLabel').textContent='الجولة شغالة...';
-    document.getElementById('plane').style.display='block';
-    document.getElementById('trail').style.display='block';
-    document.getElementById('bigText').style.display='block';
-    document.getElementById('bigText').className='big-text';
-    document.getElementById('bigText').textContent='1.00x';
-    _bp.forEach(p=>p.state='playing');
-    if(_bet.act && !_bet.cash){const pb=document.getElementById('placeBtn');pb.classList.add('cashout');_updCb();}
-    const ST=Date.now();
-    const ar=document.getElementById('crashArena');
-    const W=ar.clientWidth, H=ar.clientHeight;
-    const PL=70;
-    const sX=30, sY=30;
-    const mX=W-PL-20;
-    const mY=H-PL-60;
-    _rt=setInterval(()=>{
-        const el=(Date.now()-ST)/1000;
-        _mult = 1 + el * 1.25;
-        if(_mult >= _cp){
-            _mult = _cp;
-            document.getElementById('bigText').textContent = _mult.toFixed(2)+'x';
-            _crash();return;
-        }
-        const pr = Math.min(1, el / 20);
-        const px = sX + (mX - sX)*pr;
-        const py = sY + (mY - sY)*pr;
-        const pl = document.getElementById('plane');
-        pl.style.left = px + 'px';
-        pl.style.bottom = py + 'px';
-        pl.style.transform = 'none';
-        const pcX = px + PL/2, pcY = py + PL/2;
-        const dx = pcX - sX, dy = pcY - sY;
-        const len = Math.sqrt(dx*dx + dy*dy);
-        const aR = Math.atan2(dy, dx);
-        const aD = -aR * 180 / Math.PI;
-        const tr = document.getElementById('trail');
-        tr.style.left = sX + 'px';
-        tr.style.bottom = sY + 'px';
-        tr.style.width = len + 'px';
-        tr.style.transform = `rotate(${aD}deg)`;
-        document.getElementById('bigText').textContent = _mult.toFixed(2)+'x';
-        _bp.forEach(p=>{
-            if(p.state==='playing' && _mult >= p.cashout){
-                p.state='won';_upBot(p.id,true,p.cashout,p.bet*p.cashout);
-            }
-        });
-        if(_bet.act && !_bet.cash){_updCb();}
-    },33);
-}
-function _updCb(){const pb=document.getElementById('placeBtn');const w=(_bet.a*_mult);pb.innerHTML=`سحب<br><small>${w.toFixed(2)} ج.م</small>`;}
-function _place(){
-    if(_rs==='running' && _bet.act && !_bet.cash){_cash();return;}
-    if(_rs!=='countdown'){_toast('انتظر الجولة القادمة');return;}
-    if(_bet.act){_toast('أنت داخل الجولة بالفعل');return;}
-    const a=Number(document.getElementById('betInput').value)||0;
-    if(a<1){_toast('أقل رهان 1 ج.م');return;}
-    if(a>_bal){_toast('الرصيد غير كافٍ');return;}
-    _bet.a=a;_bet.act=true;_bet.cash=false;
-    _setBal(_bal-a);_updUI();_save();
-    const pb=document.getElementById('placeBtn');
-    pb.textContent='تم الرهان';pb.classList.add('accepted');
-    _addMe(false,0,a,0);
-}
-function _cash(){
-    if(!_bet.act||_bet.cash)return;
-    if(!_verifyBal())return;
-    const w=_bet.a*_mult;
-    _setBal(_bal+w);_updUI();_save();
-    _bet.cash=true;
-    const pb=document.getElementById('placeBtn');
-    pb.classList.remove('cashout');
-    pb.innerHTML='PLACE A BET';
-    const cs=document.getElementById('crashScreen');
-    cs.classList.add('won');
-    const wb=document.getElementById('winBanner');
-    wb.textContent=`فزت بـ ${w.toFixed(2)} ج.م`;
-    wb.classList.add('show');
-    setTimeout(()=>{wb.classList.remove('show');},3500);
-    _addMe(true,_mult,_bet.a,w);
-}
-function _crash(){
-    clearInterval(_rt);_rs='crashed';
-    _pushH(_cp);
-    document.getElementById('crashLabel').textContent='CRASHED!';
-    document.getElementById('crashLabel').className='label-top crashed';
-    document.getElementById('bigText').className='big-text crashed';
-    document.getElementById('bigText').textContent='CRASHED!';
-    document.getElementById('plane').style.display='none';
-    document.getElementById('trail').style.display='none';
-    const cs=document.getElementById('crashScreen');
-    cs.classList.remove('won');
-    document.getElementById('winBanner').className='win-banner';
-    _bp.forEach(p=>{if(p.state==='playing'){p.state='lost';_upBot(p.id,false,0,0);}});
-    if(_bet.act && !_bet.cash){_addMe(false,0,_bet.a,0);}
-    _bet.act=false;_bet.cash=false;
-    const pb=document.getElementById('placeBtn');
-    pb.classList.remove('cashout','accepted');
-    pb.innerHTML='PLACE A BET';
-    setTimeout(()=>{document.getElementById('bigText').className='big-text';_cdown();},1800);
-}
-
-/* ============ APPLE ============ */
-const _AM=[1.00,1.23,1.54,1.93,2.41,4.33,8.66,17.30,34.60,69.30];
-const _AR=10, _AC=5;
-const _CB='https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/efc0e4cb-1559-4172-8df1-389128bf9fa7.png';
-const _CT='https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/new_version_2.png';
-const _CS='https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/new_version_3.png';
-const _CR='https://raw.githubusercontent.com/turbo1-2/my-images/refs/heads/main/new_version_1.png';
-let _as={act:false,fin:false,rev:false,stk:20,sp:false,cr:0,pk:{},rt:[],cm:1.00};
-
-function _openAp(){
-    _as={act:true,fin:false,rev:false,stk:20,sp:false,cr:0,pk:{},rt:[],cm:1.00};
-    document.getElementById('appleStakeVal').textContent='20';
-    document.getElementById('appleBalance').textContent=_bal.toFixed(2);
-    ['ctrlMax','ctrlHalf','ctrlDouble','ctrlMin'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=false;});
-    _rAp();_updApBtn();
-    document.getElementById('appleScreen').classList.add('active');
-}
-function _closeAp(){document.getElementById('appleScreen').classList.remove('active');_as.act=false;}
-function _fmt(n){let s=n.toFixed(2);if(s.endsWith('0'))s=s.slice(0,-1);return s;}
-function _cvr(r){return (r===0)?_CB:_CT;}
-function _rAp(){
-    const g=document.getElementById('appleGrid');g.innerHTML='';
-    for(let vr=0;vr<_AR;vr++){
-        const gr=_AR-1-vr;
-        for(let c=0;c<_AC;c++){
-            const cell=document.createElement('div');cell.className='apple-cell';
-            let src;
-            if(_as.rev)src=(_as.rt[gr]===c)?_CR:_CS;
-            else if(_as.pk[gr]!==undefined && _as.pk[gr]===c)src=(_as.rt[gr]===c)?_CR:_CS;
-            else src=_cvr(gr);
-            cell.innerHTML=`<img src="${src}" alt="">`;
-            const cc=_as.act&&!_as.fin&&_as.sp&&gr===_as.cr&&_as.pk[gr]===undefined;
-            if(cc){cell.classList.add('clickable');cell.onclick=()=>_apClick(gr,c);}
-            g.appendChild(cell);
-        }
-    }
-    const m=document.getElementById('appleMults');m.innerHTML='';
-    for(let vr=0;vr<_AR;vr++){
-        const gr=_AR-1-vr;
-        const el=document.createElement('div');el.className='apple-mult';
-        const v=_AM[gr];
-        el.textContent=(gr===0)?v.toFixed(2):'x'+_fmt(v);
-        if(gr===_as.cr && _as.act && !_as.fin && _as.sp)el.classList.add('current');
-        else if(gr<_as.cr && _as.act && !_as.fin && _as.sp)el.classList.add('done');
-        m.appendChild(el);
-    }
-}
-function _apClick(gr,c){
-    if(!_as.act||_as.fin)return;
-    if(!_as.sp)return;
-    if(gr!==_as.cr)return;
-    if(_as.pk[gr]!==undefined)return;
-    _as.pk[gr]=c;
-    const rot=_as.rt[gr]===c;
-    if(rot){_as.fin=true;_as.cm=0;_rAp();_updApBtn();setTimeout(()=>{_as.rev=true;_rAp();},600);return;}
-    if(gr===_AR-1){_as.fin=true;_as.cm=_AM[_AR-1];const w=_as.stk*_as.cm;_setBal(_bal+w);_updUI();_save();document.getElementById('appleBalance').textContent=_bal.toFixed(2);_as.rev=true;_rAp();_updApBtn();return;}
-    _as.cr=gr+1;_as.cm=_AM[gr+1];_rAp();_updApBtn();
-}
-function _updApBtn(){const b=document.getElementById('appleActionBtn');if(!b)return;if(!_as.sp||_as.fin){b.textContent='STAKE';b.classList.remove('cashout');b.disabled=false;}else{const w=_as.stk*_as.cm;b.innerHTML=`CASHOUT<br><small>${w.toFixed(2)} ج.م</small>`;b.classList.add('cashout');b.disabled=false;}}
-function _apAction(){
-    if(!_as.act)return;
-    if(_as.fin){_rstAp();return;}
-    if(!_as.sp){
-        const sv=Number(document.getElementById('appleStakeVal').textContent)||20;
-        if(sv<10){_toast('أقل رهان 10 ج.م');return;}
-        if(sv>_bal){_toast('الرصيد غير كافٍ');return;}
-        _as.stk=sv;_setBal(_bal-_as.stk);_updUI();_save();
-        document.getElementById('appleBalance').textContent=_bal.toFixed(2);
-        _as.sp=true;_as.cr=0;_as.pk={};_as.rt=[];
-        for(let r=0;r<_AR;r++)_as.rt.push(Math.floor(Math.random()*_AC));
-        ['ctrlMax','ctrlHalf','ctrlDouble','ctrlMin'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=true;});
-        _rAp();_updApBtn();return;
-    }
-    const w=_as.stk*_as.cm;
-    _setBal(_bal+w);_updUI();_save();
-    document.getElementById('appleBalance').textContent=_bal.toFixed(2);
-    _as.fin=true;_as.rev=true;_rAp();_updApBtn();
-    setTimeout(_rstAp,2000);
-}
-function _rstAp(){
-    if(!_as.act)return;
-    _as.fin=false;_as.rev=false;_as.sp=false;_as.cr=0;_as.pk={};_as.rt=[];_as.cm=1.00;
-    const s=Number(document.getElementById('appleStakeVal').textContent)||20;
-    _as.stk=s;
-    ['ctrlMax','ctrlHalf','ctrlDouble','ctrlMin'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=false;});
-    _rAp();_updApBtn();
-}
-function _apCtrl(m){
-    if(_as.sp)return;
-    let s=Number(document.getElementById('appleStakeVal').textContent)||20;
-    if(m==='min')s=10;
-    else if(m==='double')s=s*2;
-    else if(m==='half')s=Math.max(10,Math.floor(s/2));
-    else if(m==='max')s=Math.floor(_bal);
-    if(s<10)s=10;
-    if(s>_bal)s=Math.floor(_bal);
-    document.getElementById('appleStakeVal').textContent=s;
-}
-
-/* ============ AUTO-LOGIN ============ */
-document.addEventListener('DOMContentLoaded', ()=>{
-    setTimeout(async ()=>{ await _autoLogin(); }, 400);
-});
-
-/* ============ EXPOSE ============ */
-window.showScreen=_scr;
-window.toggleEye=_eye;
-window.doLogin=_login;
-window.doSignup=_signup;
-window.goDashboard=_go;
-window.logout=_logout;
-window.copyCreds=_copy;
-window.shareCreds=_share;
-window.openDeposit=_openDep;
-window.openWithdraw=_openWd;
-window.openCrash=_openCrash;
-window.closeCrash=_closeCrash;
-window.openApple=_openAp;
-window.closeApple=_closeAp;
-window.selectMethod=_selM;
-window.copyNum=_copyNum;
-window.previewDepositImage=_prevImg;
-window.sendDeposit=_sendDep;
-window.sendWithdraw=_sendWd;
-window.closeAlert=_closeA;
-window.closeModal=_closeM;
-window.placeBet=_place;
-window.appleAction=_apAction;
-window.appleCtrl=_apCtrl;
+startOnlineCounter();
+playSplash(()=>window.showScreen('selectToolScreen'));
+restoreSession();
 </script>
 </body>
-</html>
+        </html>
